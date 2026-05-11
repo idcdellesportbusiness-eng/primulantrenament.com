@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog | IDC Sports Management</title>
+  <meta name="description" content="Articole despre regulamente FRF, management club, fotbal de juniori și educație sportivă — IDC Sports Management." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:        #1A2F5A;
+      --navy-dark:   #111f3e;
+      --navy-light:  #243d72;
+      --green:       #2d7a3a;
+      --green-light: #3a9b4a;
+      --white:       #ffffff;
+      --off-white:   #f5f6f8;
+      --gray:        #8a95a3;
+      --gray-light:  #e8eaed;
+      --font-head:   'Oswald', sans-serif;
+      --font-body:   'Source Sans 3', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--white);
+      color: var(--navy);
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: var(--navy);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      height: 64px;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+    }
+
+    .nav-logo {
+      font-family: var(--font-head);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--white);
+      text-decoration: none;
+      letter-spacing: 0.5px;
+    }
+
+    .nav-logo .logo-accent { color: var(--green-light); }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: var(--font-head);
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.75);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--white); }
+
+    .nav-links a.active {
+      color: var(--white);
+      border-bottom: 2px solid var(--green-light);
+      padding-bottom: 2px;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      margin-top: 64px;
+      background: var(--navy);
+      position: relative;
+      overflow: hidden;
+      padding: 80px 32px 72px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        -55deg,
+        transparent,
+        transparent 40px,
+        rgba(255,255,255,0.025) 40px,
+        rgba(255,255,255,0.025) 41px
+      );
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--green), var(--green-light), var(--green));
+    }
+
+    .hero-eyebrow {
+      font-family: var(--font-head);
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--green-light);
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 1;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.1s;
+    }
+
+    .hero-title {
+      font-family: var(--font-head);
+      font-size: clamp(2.2rem, 6vw, 3.8rem);
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.1;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      position: relative;
+      z-index: 1;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.2s;
+    }
+
+    .hero-title span { color: var(--green-light); }
+
+    .hero-sub {
+      margin-top: 20px;
+      font-size: 1.1rem;
+      color: rgba(255,255,255,0.7);
+      max-width: 540px;
+      line-height: 1.65;
+      position: relative;
+      z-index: 1;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.35s;
+    }
+
+    /* ── COMING SOON ── */
+    .coming-section {
+      padding: 80px 32px;
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .coming-badge {
+      display: inline-block;
+      background: var(--navy);
+      color: var(--white);
+      font-family: var(--font-head);
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      padding: 8px 20px;
+      border-radius: 2px;
+      margin-bottom: 32px;
+    }
+
+    .coming-section h2 {
+      font-family: var(--font-head);
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--navy);
+      margin-bottom: 20px;
+    }
+
+    .coming-section p {
+      font-size: 1.05rem;
+      color: #4a5568;
+      line-height: 1.8;
+      max-width: 600px;
+      margin: 0 auto 56px;
+    }
+
+    /* ── CATEGORY CARDS ── */
+    .categories-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      margin-bottom: 64px;
+    }
+
+    .category-card {
+      border: 1px solid var(--gray-light);
+      border-top: 3px solid var(--green);
+      border-radius: 4px;
+      padding: 28px 20px;
+      text-align: left;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards;
+      transition: box-shadow 0.3s, transform 0.3s;
+    }
+
+    .category-card:nth-child(1) { animation-delay: 0.1s; }
+    .category-card:nth-child(2) { animation-delay: 0.2s; }
+    .category-card:nth-child(3) { animation-delay: 0.3s; }
+    .category-card:nth-child(4) { animation-delay: 0.4s; }
+
+    .category-card:hover {
+      box-shadow: 0 8px 30px rgba(26,47,90,0.1);
+      transform: translateY(-3px);
+    }
+
+    .category-icon {
+      font-size: 1.8rem;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .category-card h3 {
+      font-family: var(--font-head);
+      font-size: 0.95rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--navy);
+      margin-bottom: 8px;
+    }
+
+    .category-card p {
+      font-size: 0.85rem;
+      color: var(--gray);
+      line-height: 1.6;
+    }
+
+    .soon-tag {
+      display: inline-block;
+      margin-top: 12px;
+      font-family: var(--font-head);
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--green);
+      border: 1px solid var(--green);
+      padding: 3px 8px;
+      border-radius: 2px;
+    }
+
+    /* ── PREVIEW ARTICLES ── */
+    .preview-section {
+      background: var(--off-white);
+      padding: 72px 32px;
+    }
+
+    .preview-inner {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-family: var(--font-head);
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--green);
+      text-align: center;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-family: var(--font-head);
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      font-weight: 700;
+      color: var(--navy);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .articles-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .article-preview {
+      background: var(--white);
+      border-radius: 4px;
+      padding: 24px 28px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      border-left: 3px solid var(--gray-light);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .article-preview:hover {
+      border-left-color: var(--green);
+      box-shadow: 0 4px 20px rgba(26,47,90,0.07);
+    }
+
+    .article-cat {
+      font-family: var(--font-head);
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--white);
+      background: var(--navy);
+      padding: 4px 10px;
+      border-radius: 2px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .article-title {
+      font-family: var(--font-head);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--navy);
+      flex: 1;
+    }
+
+    .article-soon {
+      font-family: var(--font-head);
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--gray);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    /* ── NOTIFY ── */
+    .notify-section {
+      background: var(--navy);
+      padding: 72px 32px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .notify-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        -55deg,
+        transparent,
+        transparent 40px,
+        rgba(255,255,255,0.02) 40px,
+        rgba(255,255,255,0.02) 41px
+      );
+    }
+
+    .notify-inner {
+      max-width: 520px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .notify-inner .section-label { color: var(--green-light); }
+
+    .notify-inner h2 {
+      font-family: var(--font-head);
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 700;
+      color: var(--white);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 16px;
+    }
+
+    .notify-inner p {
+      color: rgba(255,255,255,0.6);
+      font-size: 1rem;
+      line-height: 1.7;
+      margin-bottom: 32px;
+    }
+
+    .notify-form {
+      display: flex;
+      gap: 12px;
+    }
+
+    .notify-form input {
+      flex: 1;
+      padding: 14px 18px;
+      border: 1.5px solid rgba(255,255,255,0.2);
+      border-radius: 3px;
+      font-family: var(--font-body);
+      font-size: 0.97rem;
+      color: var(--white);
+      background: rgba(255,255,255,0.08);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .notify-form input::placeholder { color: rgba(255,255,255,0.35); }
+    .notify-form input:focus { border-color: var(--green-light); }
+
+    .btn-notify {
+      background: var(--green);
+      color: var(--white);
+      font-family: var(--font-head);
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 14px 24px;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.2s;
+    }
+
+    .btn-notify:hover { background: var(--green-light); }
+
+    .notify-note {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.3);
+      margin-top: 12px;
+      font-style: italic;
+    }
+
+    .notify-success {
+      display: none;
+      color: #68d391;
+      font-family: var(--font-head);
+      font-size: 1rem;
+      font-weight: 600;
+      margin-top: 16px;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--navy-dark);
+      padding: 32px;
+      text-align: center;
+    }
+
+    footer p {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.4);
+    }
+
+    footer a { color: var(--green-light); text-decoration: none; }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 720px) {
+      .categories-grid { grid-template-columns: 1fr 1fr; }
+
+      .article-preview {
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .notify-form {
+        flex-direction: column;
+      }
+
+      .nav-links { display: none; }
+
+      .hero { padding: 60px 24px 56px; }
+
+      .coming-section { padding: 60px 24px; }
+
+      .preview-section { padding: 60px 24px; }
+
+      .notify-section { padding: 60px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="index.html" class="nav-logo">
+      IDC <span class="logo-accent">Sports</span>&nbsp;Management
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Acasă</a></li>
+      <li><a href="despre.html">Despre</a></li>
+      <li><a href="servicii.html">Servicii</a></li>
+      <li><a href="resurse.html">Resurse</a></li>
+      <li><a href="blog.html" class="active">Blog</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <p class="hero-eyebrow">Cunoaștere din teren</p>
+    <h1 class="hero-title">Blog <span>IDC Sports</span></h1>
+    <p class="hero-sub">
+      Articole practice despre regulamente FRF, managementul cluburilor
+      de juniori, fotbal românesc și educație sportivă.
+    </p>
+  </section>
+
+  <!-- COMING SOON -->
+  <section class="coming-section">
+    <div class="coming-badge">⏳ În curând</div>
+    <h2>Pregătim primul articol</h2>
+    <p>
+      Blogul IDC Sports Management va fi un spațiu de informare practică
+      pentru toți cei implicați în fotbalul românesc — secretari sportivi,
+      antrenori, directori de club și părinți. Conținut real, fără teorie inutilă.
+    </p>
+
+    <div class="categories-grid">
+      <div class="category-card">
+        <span class="category-icon">⚖️</span>
+        <h3>Regulamente FRF</h3>
+        <p>Interpretări clare ale regulamentelor disciplinare și de organizare ale competițiilor.</p>
+        <span class="soon-tag">În pregătire</span>
+      </div>
+      <div class="category-card">
+        <span class="category-icon">🏟️</span>
+        <h3>Management Club</h3>
+        <p>Ghiduri practice pentru administrarea unui club de fotbal de juniori în România.</p>
+        <span class="soon-tag">În pregătire</span>
+      </div>
+      <div class="category-card">
+        <span class="category-icon">⚽</span>
+        <h3>Fotbal Românesc</h3>
+        <p>Analize, tendințe și realități din fotbalul românesc la toate nivelurile.</p>
+        <span class="soon-tag">În pregătire</span>
+      </div>
+      <div class="category-card">
+        <span class="category-icon">📚</span>
+        <h3>Educație Sportivă</h3>
+        <p>Articole educaționale pentru antrenori, jucători și familiile implicate în fotbalul de performanță.</p>
+        <span class="soon-tag">În pregătire</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- PREVIEW ARTICOLE -->
+  <section class="preview-section">
+    <div class="preview-inner">
+      <p class="section-label">Ce urmează</p>
+      <h2 class="section-title">Articole în pregătire</h2>
+      <div class="articles-list">
+
+        <div class="article-preview">
+          <span class="article-cat">Regulamente FRF</span>
+          <span class="article-title">Art. 39 vs Art. 41 — Care se aplică și când? Ghid practic pentru secretarii sportivi</span>
+          <span class="article-soon">În curând</span>
+        </div>
+
+        <div class="article-preview">
+          <span class="article-cat">Management Club</span>
+          <span class="article-title">Cum fondezi un club de fotbal în România în 2025 — pași, documente, costuri</span>
+          <span class="article-soon">În curând</span>
+        </div>
+
+        <div class="article-preview">
+          <span class="article-cat">Regulamente FRF</span>
+          <span class="article-title">Suspendările în competițiile simultane — cum gestionezi corect un jucător pe două fronturi</span>
+          <span class="article-soon">În curând</span>
+        </div>
+
+        <div class="article-preview">
+          <span class="article-cat">Fotbal Românesc</span>
+          <span class="article-title">Academia de juniori vs club sportiv — ce structură se potrivește proiectului tău</span>
+          <span class="article-soon">În curând</span>
+        </div>
+
+        <div class="article-preview">
+          <span class="article-cat">Educație Sportivă</span>
+          <span class="article-title">Ce trebuie să știe un antrenor de juniori despre regulamentele FRF înainte de primul meci</span>
+          <span class="article-soon">În curând</span>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- NOTIFICARE -->
+  <section class="notify-section">
+    <div class="notify-inner">
+      <p class="section-label">Fii primul care află</p>
+      <h2>Notifică-mă la primul articol</h2>
+      <p>Lasă-ne emailul și îți trimitem un mesaj când publicăm primul articol. Fără spam, doar conținut relevant.</p>
+      <form id="notifyForm" action="https://formsubmit.co/idcdellesportbusiness@gmail.com" method="POST">
+        <input type="hidden" name="_subject" value="Abonare blog — primulantrenament.com" />
+        <input type="hidden" name="_captcha" value="false" />
+        <input type="hidden" name="_next" value="https://primulantrenament.com/blog.html?abonat=1" />
+        <input type="text" name="_honey" style="display:none" />
+        <div class="notify-form">
+          <input type="email" name="email" placeholder="emailul tău" required />
+          <button type="submit" class="btn-notify">Notifică-mă</button>
+        </div>
+      </form>
+      <p class="notify-note">Nu trimitem spam. Te poți dezabona oricând.</p>
+      <div class="notify-success" id="notifySuccess">✓ Ești pe listă! Te anunțăm la primul articol.</div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2025 IDC Dellesport Business SRL · <a href="mailto:idcdellesportbusiness@gmail.com">idcdellesportbusiness@gmail.com</a> · <a href="https://primulantrenament.com">primulantrenament.com</a></p>
+  </footer>
+
+  <script>
+    if (window.location.search.includes('abonat=1')) {
+      document.getElementById('notifySuccess').style.display = 'block';
+      document.getElementById('notifyForm').style.display = 'none';
+    }
+  </script>
+
+</body>
+</html>
