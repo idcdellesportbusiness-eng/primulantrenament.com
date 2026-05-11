@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IDC Sports Management – Fotbalul începe înainte de primul antrenament</title>
+  <meta name="description" content="Consultanță, instrumente digitale și soluții complete pentru cluburi și antrenori de fotbal din România." />
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --navy: #1A2F5A;
+      --navy-dark: #111f3e;
+      --navy-light: #243d72;
+      --green: #2d7a3a;
+      --green-light: #38a047;
+      --white: #ffffff;
+      --off-white: #f4f6f9;
+      --gray: #6b7280;
+      --light-gray: #e5e8ef;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Source Sans 3', sans-serif;
+      background: var(--white);
+      color: var(--navy);
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(26, 47, 90, 0.97);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 5vw;
+      height: 64px;
+      border-bottom: 2px solid var(--green);
+    }
+
+    .nav-logo {
+      font-family: 'Oswald', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-logo span {
+      color: var(--green-light);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: rgba(255,255,255,0.85);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--green-light); }
+
+    .nav-cta {
+      background: var(--green);
+      color: var(--white) !important;
+      padding: 8px 18px;
+      border-radius: 4px;
+      transition: background 0.2s !important;
+    }
+
+    .nav-cta:hover { background: var(--green-light) !important; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      background: var(--navy-dark);
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      padding: 80px 5vw 60px;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 60% at 80% 50%, rgba(45,122,58,0.12) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 80% at 20% 80%, rgba(26,47,90,0.8) 0%, transparent 70%);
+    }
+
+    /* Field lines decoration */
+    .hero-field {
+      position: absolute;
+      right: -40px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 45vw;
+      max-width: 580px;
+      aspect-ratio: 1;
+      opacity: 0.06;
+    }
+
+    .hero-field svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 640px;
+      animation: fadeUp 0.9s ease both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-eyebrow {
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.8rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--green-light);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      display: block;
+      width: 32px;
+      height: 2px;
+      background: var(--green-light);
+    }
+
+    .hero h1 {
+      font-family: 'Oswald', sans-serif;
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.1;
+      margin-bottom: 24px;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+
+    .hero h1 em {
+      color: var(--green-light);
+      font-style: normal;
+    }
+
+    .hero p {
+      font-size: 1.15rem;
+      color: rgba(255,255,255,0.75);
+      line-height: 1.7;
+      margin-bottom: 40px;
+      font-weight: 300;
+      max-width: 500px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      background: var(--green);
+      color: var(--white);
+      padding: 14px 32px;
+      border-radius: 4px;
+      text-decoration: none;
+      font-family: 'Oswald', sans-serif;
+      font-size: 1rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 600;
+      transition: background 0.2s, transform 0.2s;
+      display: inline-block;
+    }
+
+    .btn-primary:hover {
+      background: var(--green-light);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--white);
+      padding: 14px 32px;
+      border-radius: 4px;
+      border: 2px solid rgba(255,255,255,0.3);
+      text-decoration: none;
+      font-family: 'Oswald', sans-serif;
+      font-size: 1rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 600;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--green-light);
+      color: var(--green-light);
+    }
+
+    /* ── STATS BAR ── */
+    .stats-bar {
+      background: var(--green);
+      padding: 20px 5vw;
+      display: flex;
+      justify-content: center;
+      gap: 60px;
+      flex-wrap: wrap;
+    }
+
+    .stat-item {
+      text-align: center;
+      color: var(--white);
+    }
+
+    .stat-number {
+      font-family: 'Oswald', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      display: block;
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      opacity: 0.85;
+      margin-top: 4px;
+      display: block;
+    }
+
+    /* ── SECTION COMMON ── */
+    section { padding: 80px 5vw; }
+
+    .section-tag {
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-tag::before {
+      content: '';
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--green);
+    }
+
+    .section-title {
+      font-family: 'Oswald', sans-serif;
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 700;
+      color: var(--navy);
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      margin-bottom: 16px;
+    }
+
+    .section-sub {
+      font-size: 1.05rem;
+      color: var(--gray);
+      max-width: 580px;
+      line-height: 1.7;
+      margin-bottom: 48px;
+    }
+
+    /* ── SERVICII ── */
+    .servicii { background: var(--off-white); }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      gap: 24px;
+    }
+
+    .card {
+      background: var(--white);
+      border-radius: 8px;
+      padding: 36px 28px;
+      border-top: 4px solid var(--navy);
+      transition: transform 0.25s, box-shadow 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 40px rgba(26,47,90,0.12);
+    }
+
+    .card:nth-child(2) { border-top-color: var(--green); }
+    .card:nth-child(3) { border-top-color: var(--navy-light); }
+    .card:nth-child(4) { border-top-color: var(--green-light); }
+
+    .card-icon {
+      font-size: 2.2rem;
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    .card h3 {
+      font-family: 'Oswald', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--navy);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 12px;
+    }
+
+    .card p {
+      font-size: 0.95rem;
+      color: var(--gray);
+      line-height: 1.7;
+    }
+
+    .card-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 20px;
+      color: var(--green);
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-decoration: none;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      transition: gap 0.2s;
+    }
+
+    .card-link:hover { gap: 10px; }
+
+    /* ── DESPRE ── */
+    .despre {
+      background: var(--navy);
+      color: var(--white);
+      display: flex;
+      gap: 60px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .despre-text { flex: 1; min-width: 280px; }
+
+    .despre .section-tag { color: var(--green-light); }
+    .despre .section-tag::before { background: var(--green-light); }
+    .despre .section-title { color: var(--white); }
+    .despre .section-sub { color: rgba(255,255,255,0.7); margin-bottom: 32px; }
+
+    .despre-features {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+
+    .feature-icon {
+      width: 36px;
+      height: 36px;
+      background: var(--green);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .feature-text strong {
+      display: block;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 2px;
+    }
+
+    .feature-text span {
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.6);
+    }
+
+    .despre-visual {
+      flex: 1;
+      min-width: 260px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      padding: 40px;
+      text-align: center;
+    }
+
+    .despre-visual .big-text {
+      font-family: 'Oswald', sans-serif;
+      font-size: 5rem;
+      font-weight: 700;
+      color: var(--green-light);
+      line-height: 1;
+      display: block;
+    }
+
+    .despre-visual .big-label {
+      font-size: 0.85rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+      margin-top: 8px;
+      display: block;
+    }
+
+    .despre-visual .divider {
+      height: 1px;
+      background: rgba(255,255,255,0.1);
+      margin: 24px 0;
+    }
+
+    /* ── CTA ── */
+    .cta-section {
+      background: var(--off-white);
+      text-align: center;
+    }
+
+    .cta-box {
+      background: var(--navy);
+      border-radius: 12px;
+      padding: 60px 40px;
+      max-width: 700px;
+      margin: 0 auto;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-box::before {
+      content: '';
+      position: absolute;
+      bottom: -40px; right: -40px;
+      width: 200px; height: 200px;
+      background: var(--green);
+      opacity: 0.15;
+      border-radius: 50%;
+    }
+
+    .cta-box h2 {
+      font-family: 'Oswald', sans-serif;
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 700;
+      color: var(--white);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 16px;
+    }
+
+    .cta-box p {
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 32px;
+      font-size: 1.05rem;
+      line-height: 1.7;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--navy-dark);
+      color: rgba(255,255,255,0.5);
+      padding: 32px 5vw;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: gap;
+      gap: 16px;
+      font-size: 0.85rem;
+    }
+
+    footer a {
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    footer a:hover { color: var(--green-light); }
+
+    .footer-logo {
+      font-family: 'Oswald', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: 0.04em;
+    }
+
+    .footer-logo span { color: var(--green-light); }
+
+    /* ── MOBILE ── */
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .stats-bar { gap: 32px; }
+      .despre { flex-direction: column; }
+      footer { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">IDC <span>Sports</span> Management</a>
+  <ul class="nav-links">
+    <li><a href="#servicii">Servicii</a></li>
+    <li><a href="#despre">Despre</a></li>
+    <li><a href="blog.html">Blog</a></li>
+    <li><a href="contact.html" class="nav-cta">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-field">
+    <svg viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="20" y="20" width="360" height="360" rx="4" stroke="white" stroke-width="3"/>
+      <line x1="200" y1="20" x2="200" y2="380" stroke="white" stroke-width="2"/>
+      <circle cx="200" cy="200" r="60" stroke="white" stroke-width="2"/>
+      <circle cx="200" cy="200" r="4" fill="white"/>
+      <rect x="20" y="140" width="50" height="120" stroke="white" stroke-width="2"/>
+      <rect x="330" y="140" width="50" height="120" stroke="white" stroke-width="2"/>
+      <rect x="20" y="160" width="20" height="80" stroke="white" stroke-width="2"/>
+      <rect x="360" y="160" width="20" height="80" stroke="white" stroke-width="2"/>
+    </svg>
+  </div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">IDC Sports Management</div>
+    <h1>Fotbalul începe<br/><em>înainte de primul</em><br/>antrenament</h1>
+    <p>Consultanță, instrumente digitale și soluții complete pentru cluburi și antrenori de fotbal din România.</p>
+    <div class="hero-buttons">
+      <a href="#servicii" class="btn-primary">Descoperă serviciile</a>
+      <a href="contact.html" class="btn-secondary">Contactează-ne</a>
+    </div>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <span class="stat-number">150+</span>
+    <span class="stat-label">Cluburi vizate</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-number">7</span>
+    <span class="stat-label">Competiții acoperite</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-number">FRF</span>
+    <span class="stat-label">Expertiză regulament</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-number">100%</span>
+    <span class="stat-label">Digital & Rapid</span>
+  </div>
+</div>
+
+<!-- SERVICII -->
+<section class="servicii" id="servicii">
+  <div class="section-tag">Ce oferim</div>
+  <h2 class="section-title">Servicii & Produse</h2>
+  <p class="section-sub">Soluții practice, construite din experiență reală în fotbalul românesc.</p>
+  <div class="cards-grid">
+    <div class="card">
+      <span class="card-icon">📋</span>
+      <h3>Trackere Suspendări</h3>
+      <p>Instrumente digitale pentru gestionarea suspendărilor în competițiile FRF — Campionat Național, Liga Elitelor, Cupă și Liga 3. Conformitate garantată cu Regulamentul Disciplinar.</p>
+      <a href="servicii.html" class="card-link">Află mai mult →</a>
+    </div>
+    <div class="card">
+      <span class="card-icon">🎯</span>
+      <h3>Consultanță Cluburi</h3>
+      <p>Sprijin strategic pentru fondarea, organizarea și administrarea cluburilor și asociațiilor sportive din România. De la statut la regulamente interne.</p>
+      <a href="servicii.html" class="card-link">Află mai mult →</a>
+    </div>
+    <div class="card">
+      <span class="card-icon">📸</span>
+      <h3>Fotografie Sportivă</h3>
+      <p>Acoperire foto profesională la turnee și competiții. Personalizare merchandise on-site pentru cluburi și academii de fotbal.</p>
+      <a href="servicii.html" class="card-link">Află mai mult →</a>
+    </div>
+    <div class="card">
+      <span class="card-icon">🏫</span>
+      <h3>Dezvoltare Academii</h3>
+      <p>Consultanță pentru înființarea și structurarea academiilor de fotbal pentru juniori. Programe de dezvoltare sportivă adaptate specificului local.</p>
+      <a href="servicii.html" class="card-link">Află mai mult →</a>
+    </div>
+  </div>
+</section>
+
+<!-- DESPRE -->
+<section class="despre" id="despre">
+  <div class="despre-text">
+    <div class="section-tag">Cine suntem</div>
+    <h2 class="section-title">Expertiză reală în fotbalul românesc</h2>
+    <p class="section-sub">IDC Sports Management combină experiența instituțională din cadrul Federației Române de Fotbal cu spiritul antreprenorial al IDC Dellesport Business SRL.</p>
+    <div class="despre-features">
+      <div class="feature-item">
+        <div class="feature-icon">⚽</div>
+        <div class="feature-text">
+          <strong>Experiență FRF</strong>
+          <span>Cunoaștere profundă a regulamentelor și competițiilor pentru juniori</span>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">💡</div>
+        <div class="feature-text">
+          <strong>Soluții digitale proprii</strong>
+          <span>Instrumente create din nevoi reale identificate în activitatea zilnică</span>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">🤝</div>
+        <div class="feature-text">
+          <strong>Orientare spre cluburi</strong>
+          <span>Produse și servicii adaptate realităților fotbalului de club din România</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="despre-visual">
+    <span class="big-text">2025</span>
+    <span class="big-label">Anul lansării</span>
+    <div class="divider"></div>
+    <span class="big-text" style="font-size:3rem;">Giurgiu</span>
+    <span class="big-label">Baza de operare</span>
+    <div class="divider"></div>
+    <span class="big-text" style="font-size:3rem;">România</span>
+    <span class="big-label">Piața țintă</span>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-box">
+    <h2>Pregătit să optimizezi activitatea clubului tău?</h2>
+    <p>Contactează-ne pentru o discuție despre nevoile clubului tău și descoperă cum te putem ajuta concret.</p>
+    <a href="contact.html" class="btn-primary">Trimite un mesaj</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">IDC <span>Sports</span> Management</div>
+  <div>© 2025 IDC Dellesport Business SRL · Giurgiu, România</div>
+  <div>
+    <a href="contact.html">Contact</a> ·
+    <a href="servicii.html">Servicii</a> ·
+    <a href="blog.html">Blog</a>
+  </div>
+</footer>
+
+</body>
+</html>
