@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact | IDC Sports Management</title>
+  <meta name="description" content="Contactează IDC Sports Management pentru o ofertă personalizată — trackere suspendări, consultanță FRF, fondare club." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:        #1A2F5A;
+      --navy-dark:   #111f3e;
+      --navy-light:  #243d72;
+      --green:       #2d7a3a;
+      --green-light: #3a9b4a;
+      --white:       #ffffff;
+      --off-white:   #f5f6f8;
+      --gray:        #8a95a3;
+      --gray-light:  #e8eaed;
+      --font-head:   'Oswald', sans-serif;
+      --font-body:   'Source Sans 3', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--white);
+      color: var(--navy);
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: var(--navy);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      height: 64px;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+    }
+
+    .nav-logo {
+      font-family: var(--font-head);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--white);
+      text-decoration: none;
+      letter-spacing: 0.5px;
+    }
+
+    .nav-logo .logo-accent { color: var(--green-light); }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: var(--font-head);
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.75);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--white); }
+
+    .nav-links a.active {
+      color: var(--white);
+      border-bottom: 2px solid var(--green-light);
+      padding-bottom: 2px;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      margin-top: 64px;
+      background: var(--navy);
+      position: relative;
+      overflow: hidden;
+      padding: 80px 32px 72px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        -55deg,
+        transparent,
+        transparent 40px,
+        rgba(255,255,255,0.025) 40px,
+        rgba(255,255,255,0.025) 41px
+      );
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--green), var(--green-light), var(--green));
+    }
+
+    .hero-eyebrow {
+      font-family: var(--font-head);
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--green-light);
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 1;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.1s;
+    }
+
+    .hero-title {
+      font-family: var(--font-head);
+      font-size: clamp(2.2rem, 6vw, 3.8rem);
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.1;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      position: relative;
+      z-index: 1;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.2s;
+    }
+
+    .hero-title span { color: var(--green-light); }
+
+    .hero-sub {
+      margin-top: 20px;
+      font-size: 1.1rem;
+      color: rgba(255,255,255,0.7);
+      max-width: 500px;
+      line-height: 1.65;
+      position: relative;
+      z-index: 1;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.35s;
+    }
+
+    /* ── CONTACT LAYOUT ── */
+    .contact-section {
+      padding: 80px 32px;
+      max-width: 1000px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 64px;
+      align-items: start;
+    }
+
+    /* ── INFO COLUMN ── */
+    .contact-info h2 {
+      font-family: var(--font-head);
+      font-size: 1.4rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--navy);
+      margin-bottom: 24px;
+      padding-bottom: 12px;
+      border-bottom: 3px solid var(--green);
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .contact-item-icon {
+      width: 44px;
+      height: 44px;
+      background: var(--navy);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+
+    .contact-item-text h3 {
+      font-family: var(--font-head);
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--gray);
+      margin-bottom: 4px;
+    }
+
+    .contact-item-text a,
+    .contact-item-text p {
+      font-size: 1rem;
+      color: var(--navy);
+      text-decoration: none;
+      line-height: 1.5;
+    }
+
+    .contact-item-text a:hover { color: var(--green); }
+
+    .phone-placeholder {
+      font-size: 0.9rem;
+      color: var(--gray);
+      font-style: italic;
+    }
+
+    .contact-note {
+      margin-top: 32px;
+      padding: 20px;
+      background: var(--off-white);
+      border-left: 3px solid var(--green);
+      border-radius: 2px;
+    }
+
+    .contact-note p {
+      font-size: 0.9rem;
+      color: #4a5568;
+      line-height: 1.65;
+    }
+
+    /* ── FORM COLUMN ── */
+    .contact-form-wrap h2 {
+      font-family: var(--font-head);
+      font-size: 1.4rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--navy);
+      margin-bottom: 28px;
+      padding-bottom: 12px;
+      border-bottom: 3px solid var(--green);
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      font-family: var(--font-head);
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--navy);
+      margin-bottom: 8px;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1.5px solid var(--gray-light);
+      border-radius: 3px;
+      font-family: var(--font-body);
+      font-size: 0.97rem;
+      color: var(--navy);
+      background: var(--white);
+      transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
+      appearance: none;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--navy);
+      box-shadow: 0 0 0 3px rgba(26,47,90,0.08);
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 140px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .btn-submit {
+      width: 100%;
+      background: var(--navy);
+      color: var(--white);
+      font-family: var(--font-head);
+      font-size: 0.95rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 16px 32px;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+      margin-top: 8px;
+    }
+
+    .btn-submit:hover {
+      background: var(--green);
+      transform: translateY(-2px);
+    }
+
+    /* Success message */
+    .form-success {
+      display: none;
+      background: #e8f5e9;
+      border: 1.5px solid var(--green);
+      border-radius: 4px;
+      padding: 20px 24px;
+      text-align: center;
+      margin-top: 16px;
+    }
+
+    .form-success p {
+      color: var(--green);
+      font-family: var(--font-head);
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--navy-dark);
+      padding: 32px;
+      text-align: center;
+    }
+
+    footer p {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.4);
+    }
+
+    footer a {
+      color: var(--green-light);
+      text-decoration: none;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 720px) {
+      .contact-section {
+        grid-template-columns: 1fr;
+        gap: 48px;
+        padding: 60px 24px;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      .nav-links { display: none; }
+
+      .hero { padding: 60px 24px 56px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="index.html" class="nav-logo">
+      IDC <span class="logo-accent">Sports</span>&nbsp;Management
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Acasă</a></li>
+      <li><a href="despre.html">Despre</a></li>
+      <li><a href="servicii.html">Servicii</a></li>
+      <li><a href="resurse.html">Resurse</a></li>
+      <li><a href="blog.html">Blog</a></li>
+      <li><a href="contact.html" class="active">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <p class="hero-eyebrow">Hai să vorbim</p>
+    <h1 class="hero-title">Contactează<span>-ne</span></h1>
+    <p class="hero-sub">
+      Spune-ne care este nevoia clubului tău și îți pregătim
+      o ofertă personalizată în cel mai scurt timp.
+    </p>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact-section">
+
+    <!-- INFO -->
+    <div class="contact-info">
+      <h2>Date de contact</h2>
+
+      <div class="contact-item">
+        <div class="contact-item-icon">✉️</div>
+        <div class="contact-item-text">
+          <h3>Email</h3>
+          <a href="mailto:idcdellesportbusiness@gmail.com">idcdellesportbusiness@gmail.com</a>
+        </div>
+      </div>
+
+      <div class="contact-item">
+        <div class="contact-item-icon">📞</div>
+        <div class="contact-item-text">
+          <h3>Telefon</h3>
+          <p class="phone-placeholder">În curând disponibil</p>
+        </div>
+      </div>
+
+      <div class="contact-item">
+        <div class="contact-item-icon">📍</div>
+        <div class="contact-item-text">
+          <h3>Locație</h3>
+          <p>Giurgiu, România</p>
+        </div>
+      </div>
+
+      <div class="contact-note">
+        <p>
+          Răspundem în maxim <strong>24 de ore lucrătoare</strong>.
+          Pentru urgențe sau întrebări rapide, folosește emailul direct.
+        </p>
+      </div>
+    </div>
+
+    <!-- FORM -->
+    <div class="contact-form-wrap">
+      <h2>Trimite un mesaj</h2>
+      <form id="contactForm" action="https://formsubmit.co/idcdellesportbusiness@gmail.com" method="POST">
+
+        <!-- FormSubmit config -->
+        <input type="hidden" name="_subject" value="Mesaj nou — primulantrenament.com" />
+        <input type="hidden" name="_captcha" value="false" />
+        <input type="hidden" name="_next" value="https://primulantrenament.com/contact.html?trimis=1" />
+        <input type="text" name="_honey" style="display:none" />
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="nume">Nume *</label>
+            <input type="text" id="nume" name="nume" placeholder="Numele tău" required />
+          </div>
+          <div class="form-group">
+            <label for="club">Club / Organizație</label>
+            <input type="text" id="club" name="club" placeholder="ex: CS Fotbal Giurgiu" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email *</label>
+          <input type="email" id="email" name="email" placeholder="email@exemplu.ro" required />
+        </div>
+
+        <div class="form-group">
+          <label for="serviciu">Serviciu de interes</label>
+          <select id="serviciu" name="serviciu">
+            <option value="">— Selectează —</option>
+            <option value="trackere">Trackere Suspendări FRF</option>
+            <option value="consultanta">Consultanță Regulamente FRF</option>
+            <option value="personalizare">Personalizare On-Site Turnee</option>
+            <option value="fondare">Fondare Club / Academie</option>
+            <option value="altele">Altele</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="mesaj">Mesaj *</label>
+          <textarea id="mesaj" name="mesaj" placeholder="Descrie pe scurt nevoia clubului tău..." required></textarea>
+        </div>
+
+        <button type="submit" class="btn-submit">Trimite mesajul</button>
+      </form>
+
+      <div class="form-success" id="formSuccess">
+        <p>✓ Mesajul a fost trimis! Te contactăm în maxim 24h.</p>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2025 IDC Dellesport Business SRL · <a href="mailto:idcdellesportbusiness@gmail.com">idcdellesportbusiness@gmail.com</a> · <a href="https://primulantrenament.com">primulantrenament.com</a></p>
+  </footer>
+
+  <script>
+    // Afișează mesaj de succes dacă URL conține ?trimis=1
+    if (window.location.search.includes('trimis=1')) {
+      document.getElementById('formSuccess').style.display = 'block';
+      document.getElementById('contactForm').style.display = 'none';
+    }
+  </script>
+
+</body>
+</html>
