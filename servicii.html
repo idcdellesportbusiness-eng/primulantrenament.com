@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Servicii | IDC Sports Management</title>
+  <meta name="description" content="Trackere suspendări, consultanță FRF, personalizare on-site și fondare club — soluții complete pentru fotbalul românesc." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:        #1A2F5A;
+      --navy-dark:   #111f3e;
+      --navy-light:  #243d72;
+      --green:       #2d7a3a;
+      --green-light: #3a9b4a;
+      --white:       #ffffff;
+      --off-white:   #f5f6f8;
+      --gray:        #8a95a3;
+      --font-head:   'Oswald', sans-serif;
+      --font-body:   'Source Sans 3', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--white);
+      color: var(--navy);
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: var(--navy);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      height: 64px;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+    }
+
+    .nav-logo {
+      font-family: var(--font-head);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--white);
+      text-decoration: none;
+      letter-spacing: 0.5px;
+    }
+
+    .nav-logo .logo-accent { color: var(--green-light); }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: var(--font-head);
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.75);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--white); }
+
+    .nav-links a.active {
+      color: var(--white);
+      border-bottom: 2px solid var(--green-light);
+      padding-bottom: 2px;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      margin-top: 64px;
+      background: var(--navy);
+      position: relative;
+      overflow: hidden;
+      padding: 80px 32px 72px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        -55deg,
+        transparent,
+        transparent 40px,
+        rgba(255,255,255,0.025) 40px,
+        rgba(255,255,255,0.025) 41px
+      );
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--green), var(--green-light), var(--green));
+    }
+
+    .hero-eyebrow {
+      font-family: var(--font-head);
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--green-light);
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 1;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.1s;
+    }
+
+    .hero-title {
+      font-family: var(--font-head);
+      font-size: clamp(2.2rem, 6vw, 3.8rem);
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.1;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      position: relative;
+      z-index: 1;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.2s;
+    }
+
+    .hero-title span { color: var(--green-light); }
+
+    .hero-sub {
+      margin-top: 20px;
+      font-size: 1.1rem;
+      color: rgba(255,255,255,0.7);
+      max-width: 540px;
+      line-height: 1.65;
+      position: relative;
+      z-index: 1;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.35s;
+    }
+
+    /* ── SERVICES GRID ── */
+    .services-section {
+      padding: 80px 32px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+    }
+
+    .service-card {
+      border: 1px solid #e0e4ea;
+      border-top: 4px solid var(--green);
+      border-radius: 4px;
+      padding: 40px 32px;
+      position: relative;
+      transition: box-shadow 0.3s, transform 0.3s;
+      background: var(--white);
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards;
+    }
+
+    .service-card:nth-child(1) { animation-delay: 0.1s; }
+    .service-card:nth-child(2) { animation-delay: 0.2s; }
+    .service-card:nth-child(3) { animation-delay: 0.3s; }
+    .service-card:nth-child(4) { animation-delay: 0.4s; }
+
+    .service-card:hover {
+      box-shadow: 0 12px 40px rgba(26,47,90,0.12);
+      transform: translateY(-4px);
+    }
+
+    .service-card.featured {
+      border-top-color: var(--navy);
+      background: var(--navy);
+      color: var(--white);
+    }
+
+    .service-badge {
+      display: inline-block;
+      background: var(--green);
+      color: var(--white);
+      font-family: var(--font-head);
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 2px;
+      margin-bottom: 20px;
+    }
+
+    .service-card.featured .service-badge {
+      background: var(--green-light);
+    }
+
+    .service-icon {
+      font-size: 2.4rem;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .service-card h2 {
+      font-family: var(--font-head);
+      font-size: 1.4rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 14px;
+      color: var(--navy);
+    }
+
+    .service-card.featured h2 { color: var(--white); }
+
+    .service-card p {
+      font-size: 0.97rem;
+      line-height: 1.75;
+      color: #4a5568;
+      margin-bottom: 14px;
+    }
+
+    .service-card.featured p { color: rgba(255,255,255,0.75); }
+
+    .service-list {
+      list-style: none;
+      margin: 16px 0 28px;
+    }
+
+    .service-list li {
+      font-size: 0.93rem;
+      color: #3a4a5c;
+      padding: 6px 0;
+      padding-left: 20px;
+      position: relative;
+      line-height: 1.5;
+    }
+
+    .service-card.featured .service-list li { color: rgba(255,255,255,0.8); }
+
+    .service-list li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: var(--green);
+      font-weight: 700;
+    }
+
+    .service-card.featured .service-list li::before { color: var(--green-light); }
+
+    .btn-oferta {
+      display: inline-block;
+      background: var(--navy);
+      color: var(--white);
+      font-family: var(--font-head);
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 12px 28px;
+      text-decoration: none;
+      border-radius: 2px;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .btn-oferta:hover {
+      background: var(--navy-light);
+      transform: translateY(-2px);
+    }
+
+    .service-card.featured .btn-oferta {
+      background: var(--green);
+    }
+
+    .service-card.featured .btn-oferta:hover {
+      background: var(--green-light);
+    }
+
+    /* ── WHY US ── */
+    .why-section {
+      background: var(--off-white);
+      padding: 72px 32px;
+    }
+
+    .why-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .section-label {
+      font-family: var(--font-head);
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-family: var(--font-head);
+      font-size: clamp(1.6rem, 4vw, 2.2rem);
+      font-weight: 700;
+      color: var(--navy);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 48px;
+    }
+
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      text-align: left;
+    }
+
+    .why-item {
+      padding: 24px;
+      background: var(--white);
+      border-radius: 4px;
+      border-left: 3px solid var(--green);
+    }
+
+    .why-item h3 {
+      font-family: var(--font-head);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--navy);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    .why-item p {
+      font-size: 0.9rem;
+      color: var(--gray);
+      line-height: 1.65;
+    }
+
+    /* ── CTA ── */
+    .cta-section {
+      background: var(--navy);
+      padding: 72px 32px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        -55deg,
+        transparent,
+        transparent 40px,
+        rgba(255,255,255,0.02) 40px,
+        rgba(255,255,255,0.02) 41px
+      );
+    }
+
+    .cta-section h2 {
+      font-family: var(--font-head);
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 700;
+      color: var(--white);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 16px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-section p {
+      color: rgba(255,255,255,0.65);
+      font-size: 1rem;
+      margin-bottom: 32px;
+      max-width: 460px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.65;
+      position: relative;
+      z-index: 1;
+    }
+
+    .btn-cta {
+      display: inline-block;
+      background: var(--green);
+      color: var(--white);
+      font-family: var(--font-head);
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 16px 40px;
+      text-decoration: none;
+      border-radius: 2px;
+      transition: background 0.2s, transform 0.2s;
+      position: relative;
+      z-index: 1;
+    }
+
+    .btn-cta:hover {
+      background: var(--green-light);
+      transform: translateY(-2px);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--navy-dark);
+      padding: 32px;
+      text-align: center;
+    }
+
+    footer p {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.4);
+    }
+
+    footer a {
+      color: var(--green-light);
+      text-decoration: none;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 720px) {
+      .services-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .why-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .nav-links { display: none; }
+
+      .hero { padding: 60px 24px 56px; }
+
+      .services-section { padding: 60px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="index.html" class="nav-logo">
+      IDC <span class="logo-accent">Sports</span>&nbsp;Management
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Acasă</a></li>
+      <li><a href="despre.html">Despre</a></li>
+      <li><a href="servicii.html" class="active">Servicii</a></li>
+      <li><a href="resurse.html">Resurse</a></li>
+      <li><a href="blog.html">Blog</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <p class="hero-eyebrow">Ce oferim</p>
+    <h1 class="hero-title">Serviciile <span>noastre</span></h1>
+    <p class="hero-sub">
+      Soluții concrete pentru cluburile de fotbal din România —
+      instrumente digitale, consultanță reglementară și sprijin
+      în construirea structurilor sportive.
+    </p>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="services-section">
+    <div class="services-grid">
+
+      <!-- 1. Trackere -->
+      <div class="service-card featured">
+        <span class="service-badge">Produs principal</span>
+        <span class="service-icon">📋</span>
+        <h2>Trackere Suspendări FRF</h2>
+        <p>
+          Sistem complet de urmărire a suspendărilor pentru competițiile
+          de juniori ale FRF, bazat pe Regulamentul Disciplinar în vigoare
+          (Art. 39 și 41).
+        </p>
+        <ul class="service-list">
+          <li>Campionat Național, Liga Elitelor, Cupă Națională</li>
+          <li>Cupă Elitelor, Liga 3 juniori</li>
+          <li>Logică disciplinară verificată regulamentar</li>
+          <li>Fișiere HTML — funcționează offline, fără instalare</li>
+          <li>Licență anuală per club, pachet 4 fișiere</li>
+        </ul>
+        <a href="contact.html" class="btn-oferta">Solicită ofertă</a>
+      </div>
+
+      <!-- 2. Consultanță FRF -->
+      <div class="service-card">
+        <span class="service-badge">Consultanță</span>
+        <span class="service-icon">📖</span>
+        <h2>Consultanță Regulamente FRF</h2>
+        <p>
+          Interpretare și aplicare corectă a regulamentelor FRF pentru
+          competițiile de juniori — de la disciplinar la organizarea loturilor
+          și eligibilitate jucători.
+        </p>
+        <ul class="service-list">
+          <li>Interpretare Regulament Disciplinar FRF</li>
+          <li>Eligibilitate și înregistrare jucători</li>
+          <li>Conformitate în competițiile de juniori</li>
+          <li>Suport punctual sau continuu per sezon</li>
+        </ul>
+        <a href="contact.html" class="btn-oferta">Solicită ofertă</a>
+      </div>
+
+      <!-- 3. Personalizare on-site -->
+      <div class="service-card">
+        <span class="service-badge">Evenimente</span>
+        <span class="service-icon">🏆</span>
+        <h2>Personalizare On-Site la Turnee</h2>
+        <p>
+          Serviciu complet de personalizare merchandise la fața locului,
+          disponibil la turnee și competiții de fotbal — echipamente,
+          tricouri, accesorii personalizate pe loc.
+        </p>
+        <ul class="service-list">
+          <li>Personalizare tricouri și echipamente la minut</li>
+          <li>Prezență la turnee și competiții FRF</li>
+          <li>Soluție completă pentru cluburi și academii</li>
+          <li>Disponibil la nivel național</li>
+        </ul>
+        <a href="contact.html" class="btn-oferta">Solicită ofertă</a>
+      </div>
+
+      <!-- 4. Fondare club -->
+      <div class="service-card">
+        <span class="service-badge">Structuri sportive</span>
+        <span class="service-icon">🏛️</span>
+        <h2>Fondare Club / Academie de Fotbal</h2>
+        <p>
+          Asistență completă în procesul de fondare a unui club sau
+          asociații sportive — de la documentele constitutive până la
+          înregistrarea la ANS și afiliere FRF.
+        </p>
+        <ul class="service-list">
+          <li>Statut și Act Constitutiv conform legislației în vigoare</li>
+          <li>Documentație completă pentru Judecătorie și ANS</li>
+          <li>Afiliere FRF și AJF — proceduri și cerințe</li>
+          <li>Consultanță structură organizatorică și sportivă</li>
+        </ul>
+        <a href="contact.html" class="btn-oferta">Solicită ofertă</a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- WHY US -->
+  <section class="why-section">
+    <div class="why-inner">
+      <p class="section-label">Avantaje</p>
+      <h2 class="section-title">De ce IDC Sports Management</h2>
+      <div class="why-grid">
+        <div class="why-item">
+          <h3>Expertiză internă</h3>
+          <p>Cunoaștem fotbalul românesc din interior — regulamente, structuri și realitățile zilnice ale cluburilor.</p>
+        </div>
+        <div class="why-item">
+          <h3>Soluții verificate</h3>
+          <p>Fiecare instrument livrat este testat și validat conform regulamentelor FRF în vigoare.</p>
+        </div>
+        <div class="why-item">
+          <h3>Suport continuu</h3>
+          <p>Nu livrăm și dispărem — suntem alături de cluburile partenere pe toată durata sezonului.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <h2>Hai să discutăm</h2>
+    <p>Spune-ne care este nevoia clubului tău și îți pregătim o ofertă personalizată.</p>
+    <a href="contact.html" class="btn-cta">Contactează-ne</a>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2025 IDC Dellesport Business SRL · <a href="mailto:idcdellesportbusiness@gmail.com">idcdellesportbusiness@gmail.com</a> · <a href="https://primulantrenament.com">primulantrenament.com</a></p>
+  </footer>
+
+</body>
+</html>
