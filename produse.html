@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Produse | IDC Sports Management</title>
+  <meta name="description" content="Descoperă instrumentele digitale IDC Sports Management pentru gestionarea suspendărilor în competițiile FRF de juniori." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:        #1A2F5A;
+      --navy-dark:   #111f3e;
+      --navy-light:  #243d72;
+      --green:       #2d7a3a;
+      --green-light: #3a9b4a;
+      --white:       #ffffff;
+      --off-white:   #f5f6f8;
+      --gray:        #8a95a3;
+      --gray-light:  #e8eaed;
+      --font-head:   'Oswald', sans-serif;
+      --font-body:   'Source Sans 3', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--white);
+      color: var(--navy);
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: var(--navy);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      height: 64px;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+    }
+
+    .nav-logo {
+      font-family: var(--font-head);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--white);
+      text-decoration: none;
+      letter-spacing: 0.5px;
+    }
+
+    .nav-logo .logo-accent { color: var(--green-light); }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: var(--font-head);
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.75);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--white); }
+
+    .nav-links a.active {
+      color: var(--white);
+      border-bottom: 2px solid var(--green-light);
+      padding-bottom: 2px;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      margin-top: 64px;
+      background: var(--navy);
+      position: relative;
+      overflow: hidden;
+      padding: 80px 32px 72px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        -55deg,
+        transparent,
+        transparent 40px,
+        rgba(255,255,255,0.025) 40px,
+        rgba(255,255,255,0.025) 41px
+      );
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--green), var(--green-light), var(--green));
+    }
+
+    .hero-eyebrow {
+      font-family: var(--font-head);
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--green-light);
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 1;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.1s;
+    }
+
+    .hero-title {
+      font-family: var(--font-head);
+      font-size: clamp(2.2rem, 6vw, 3.8rem);
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.1;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      position: relative;
+      z-index: 1;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.2s;
+    }
+
+    .hero-title span { color: var(--green-light); }
+
+    .hero-sub {
+      margin-top: 20px;
+      font-size: 1.1rem;
+      color: rgba(255,255,255,0.7);
+      max-width: 540px;
+      line-height: 1.65;
+      position: relative;
+      z-index: 1;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.35s;
+    }
+
+    /* ── PROBLEMA ── */
+    .problem-section {
+      background: var(--off-white);
+      padding: 72px 32px;
+    }
+
+    .problem-inner {
+      max-width: 860px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .section-label {
+      font-family: var(--font-head);
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-family: var(--font-head);
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 700;
+      color: var(--navy);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 24px;
+    }
+
+    .problem-text {
+      font-size: 1.05rem;
+      color: #4a5568;
+      line-height: 1.8;
+      max-width: 680px;
+      margin: 0 auto 40px;
+    }
+
+    .pain-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      text-align: left;
+    }
+
+    .pain-card {
+      background: var(--white);
+      border-radius: 4px;
+      padding: 24px 20px;
+      border-left: 3px solid #e53e3e;
+    }
+
+    .pain-card .pain-icon {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    .pain-card h3 {
+      font-family: var(--font-head);
+      font-size: 0.95rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: var(--navy);
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    .pain-card p {
+      font-size: 0.88rem;
+      color: var(--gray);
+      line-height: 1.6;
+    }
+
+    /* ── SOLUTIA ── */
+    .solution-section {
+      padding: 80px 32px;
+      max-width: 1000px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+    }
+
+    .solution-text h2 {
+      font-family: var(--font-head);
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--navy);
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 3px solid var(--green);
+    }
+
+    .solution-text p {
+      font-size: 1rem;
+      color: #4a5568;
+      line-height: 1.8;
+      margin-bottom: 16px;
+    }
+
+    .feature-list {
+      list-style: none;
+      margin-top: 24px;
+    }
+
+    .feature-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--gray-light);
+      font-size: 0.95rem;
+      color: #3a4a5c;
+      line-height: 1.5;
+    }
+
+    .feature-list li:last-child { border-bottom: none; }
+
+    .feature-list li::before {
+      content: '✓';
+      color: var(--green);
+      font-weight: 700;
+      font-size: 1rem;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* ── TRACKER PREVIEW ── */
+    .tracker-preview {
+      background: var(--navy);
+      border-radius: 8px;
+      padding: 28px 24px;
+      position: relative;
+      box-shadow: 0 20px 60px rgba(26,47,90,0.25);
+    }
+
+    .preview-bar {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 20px;
+    }
+
+    .preview-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+    }
+
+    .preview-title {
+      font-family: var(--font-head);
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--green-light);
+      margin-bottom: 16px;
+    }
+
+    .preview-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 8px;
+      align-items: center;
+    }
+
+    .preview-header .preview-cell {
+      font-family: var(--font-head);
+      font-size: 0.65rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+    }
+
+    .preview-cell {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.75);
+      padding: 6px 8px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 3px;
+    }
+
+    .preview-cell.suspended {
+      background: rgba(229,62,62,0.15);
+      color: #fc8181;
+      font-weight: 600;
+    }
+
+    .preview-cell.clear {
+      background: rgba(45,122,58,0.2);
+      color: #68d391;
+    }
+
+    .preview-blur {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 80px;
+      background: linear-gradient(to top, var(--navy), transparent);
+      border-radius: 0 0 8px 8px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding-bottom: 16px;
+    }
+
+    .preview-lock {
+      font-family: var(--font-head);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+    }
+
+    /* ── DEMO FORM ── */
+    .demo-section {
+      background: var(--navy);
+      padding: 80px 32px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .demo-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        -55deg,
+        transparent,
+        transparent 40px,
+        rgba(255,255,255,0.02) 40px,
+        rgba(255,255,255,0.02) 41px
+      );
+    }
+
+    .demo-inner {
+      max-width: 600px;
+      margin: 0 auto;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .demo-inner .section-label { color: var(--green-light); }
+
+    .demo-inner .section-title {
+      color: var(--white);
+      margin-bottom: 16px;
+    }
+
+    .demo-inner p {
+      color: rgba(255,255,255,0.65);
+      font-size: 1rem;
+      line-height: 1.7;
+      margin-bottom: 40px;
+    }
+
+    .demo-form {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 6px;
+      padding: 40px 36px;
+      text-align: left;
+    }
+
+    .demo-form .form-group {
+      margin-bottom: 18px;
+    }
+
+    .demo-form label {
+      display: block;
+      font-family: var(--font-head);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 8px;
+    }
+
+    .demo-form input,
+    .demo-form select {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1.5px solid rgba(255,255,255,0.15);
+      border-radius: 3px;
+      font-family: var(--font-body);
+      font-size: 0.97rem;
+      color: var(--white);
+      background: rgba(255,255,255,0.07);
+      transition: border-color 0.2s;
+      outline: none;
+      appearance: none;
+    }
+
+    .demo-form input::placeholder { color: rgba(255,255,255,0.3); }
+
+    .demo-form input:focus,
+    .demo-form select:focus {
+      border-color: var(--green-light);
+    }
+
+    .demo-form select option { background: var(--navy); color: var(--white); }
+
+    .demo-note {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.35);
+      text-align: center;
+      margin-top: 12px;
+      font-style: italic;
+    }
+
+    .btn-demo {
+      width: 100%;
+      background: var(--green);
+      color: var(--white);
+      font-family: var(--font-head);
+      font-size: 0.95rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 16px 32px;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+      margin-top: 8px;
+    }
+
+    .btn-demo:hover {
+      background: var(--green-light);
+      transform: translateY(-2px);
+    }
+
+    .form-success {
+      display: none;
+      background: rgba(45,122,58,0.2);
+      border: 1.5px solid var(--green-light);
+      border-radius: 4px;
+      padding: 24px;
+      text-align: center;
+      margin-top: 16px;
+    }
+
+    .form-success p {
+      color: #68d391;
+      font-family: var(--font-head);
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      margin-bottom: 0;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--navy-dark);
+      padding: 32px;
+      text-align: center;
+    }
+
+    footer p {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.4);
+    }
+
+    footer a { color: var(--green-light); text-decoration: none; }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 720px) {
+      .pain-grid { grid-template-columns: 1fr; }
+
+      .solution-section {
+        grid-template-columns: 1fr;
+        gap: 40px;
+        padding: 60px 24px;
+      }
+
+      .demo-form { padding: 28px 20px; }
+
+      .nav-links { display: none; }
+
+      .hero { padding: 60px 24px 56px; }
+
+      .problem-section { padding: 60px 24px; }
+
+      .demo-section { padding: 60px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="index.html" class="nav-logo">
+      IDC <span class="logo-accent">Sports</span>&nbsp;Management
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Acasă</a></li>
+      <li><a href="despre.html">Despre</a></li>
+      <li><a href="servicii.html">Servicii</a></li>
+      <li><a href="produse.html" class="active">Produse</a></li>
+      <li><a href="blog.html">Blog</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <p class="hero-eyebrow">Instrumente digitale</p>
+    <h1 class="hero-title">Produse pentru <span>clubul tău</span></h1>
+    <p class="hero-sub">
+      Descoperă cum gestionezi suspendările în competițiile FRF
+      fără erori, fără calcule manuale și fără riscuri disciplinare.
+    </p>
+  </section>
+
+  <!-- PROBLEMA -->
+  <section class="problem-section">
+    <div class="problem-inner">
+      <p class="section-label">Realitatea din teren</p>
+      <h2 class="section-title">O evidență greșită a suspendărilor te poate costa puncte (ratarea sezonului), bani și reputația clubului. Ești pregătit să riști, sau preferi să fii sigur?</h2>
+      <p class="problem-text">
+        Fiecare club care participă în competițiile FRF de juniori se confruntă
+        cu aceeași provocare: gestionarea suspendărilor pe mai multe competiții,
+        cu regulamente diferite, simultan. O greșeală înseamnă punct dedus,
+        amendă sau descalificare.
+      </p>
+      <div class="pain-grid">
+        <div class="pain-card">
+          <span class="pain-icon">📄</span>
+          <h3>Foi Excel nesigure</h3>
+          <p>Calculele manuale duc la erori. Un jucător suspendat uitat pe teren poate costa scump.</p>
+        </div>
+        <div class="pain-card">
+          <span class="pain-icon">⚖️</span>
+          <h3>Regulamente complexe</h3>
+          <p>Art. 39 și 41 din Regulamentul Disciplinar FRF au logici diferite pe competiții.</p>
+        </div>
+        <div class="pain-card">
+          <span class="pain-icon">🔄</span>
+          <h3>Mai multe competiții simultan</h3>
+          <p>Un jucător poate fi suspendat în Campionat dar eligibil în Cupă — sau invers.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOLUTIA -->
+  <section class="solution-section">
+    <div class="solution-text">
+      <h2>Trackere de Suspendări FRF</h2>
+      <p>
+        Am construit un sistem de fișiere HTML care automatizează urmărirea
+        suspendărilor pentru toate competițiile FRF de juniori în care
+        activează clubul tău.
+      </p>
+      <p>
+        Logica disciplinară este implementată direct în instrument —
+        nu mai calculezi manual, nu mai riști erori.
+      </p>
+      <ul class="feature-list">
+        <li>Campionat Național, Liga Elitelor, Cupă Națională, Cupă Elitelor, Liga 3</li>
+        <li>Bazat pe Regulamentul Disciplinar FRF, Art. 39 și 41</li>
+        <li>Funcționează offline — nu necesită internet sau instalare</li>
+        <li>Actualizat la fiecare modificare regulamentară</li>
+        <li>Livrat ca pachet complet per sezon competițional</li>
+      </ul>
+    </div>
+
+    <!-- PREVIEW VIZUAL -->
+    <div class="tracker-preview">
+      <div class="preview-bar">
+        <div class="preview-dot"></div>
+        <div class="preview-dot"></div>
+        <div class="preview-dot"></div>
+      </div>
+      <div class="preview-title">Tracker Suspendări — Liga Elitelor U17</div>
+      <div class="preview-row preview-header">
+        <div class="preview-cell">Jucător</div>
+        <div class="preview-cell">Cartonașe</div>
+        <div class="preview-cell">Status</div>
+      </div>
+      <div class="preview-row">
+        <div class="preview-cell">Ionescu A.</div>
+        <div class="preview-cell">2 galbene</div>
+        <div class="preview-cell clear">Eligibil</div>
+      </div>
+      <div class="preview-row">
+        <div class="preview-cell">Popescu M.</div>
+        <div class="preview-cell">3 galbene</div>
+        <div class="preview-cell suspended">Suspendat</div>
+      </div>
+      <div class="preview-row">
+        <div class="preview-cell">Constantin R.</div>
+        <div class="preview-cell">1 galben</div>
+        <div class="preview-cell clear">Eligibil</div>
+      </div>
+      <div class="preview-row">
+        <div class="preview-cell">Dumitrescu V.</div>
+        <div class="preview-cell">— —</div>
+        <div class="preview-cell clear">Eligibil</div>
+      </div>
+      <div class="preview-blur">
+        <span class="preview-lock">🔒 Solicită acces complet</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- DEMO FORM -->
+  <section class="demo-section">
+    <div class="demo-inner">
+      <p class="section-label">Fă primul pas</p>
+      <h2 class="section-title">Solicită un demo gratuit</h2>
+      <p>
+        Lasă-ne datele de contact și îți pregătim o demonstrație personalizată
+        pe competițiile în care activează clubul tău. Fără obligații.
+      </p>
+
+      <div class="demo-form">
+        <form id="demoForm" action="https://formsubmit.co/idcdellesportbusiness@gmail.com" method="POST">
+          <input type="hidden" name="_subject" value="Solicitare demo tracker — primulantrenament.com" />
+          <input type="hidden" name="_captcha" value="false" />
+          <input type="hidden" name="_next" value="https://primulantrenament.com/produse.html?demo=1" />
+          <input type="text" name="_honey" style="display:none" />
+
+          <div class="form-group">
+            <label for="nume">Nume și prenume *</label>
+            <input type="text" id="nume" name="nume" placeholder="Numele tău" required />
+          </div>
+
+          <div class="form-group">
+            <label for="club">Club *</label>
+            <input type="text" id="club" name="club" placeholder="ex: CS Fotbal Giurgiu" required />
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email *</label>
+            <input type="email" id="email" name="email" placeholder="email@exemplu.ro" required />
+          </div>
+
+          <div class="form-group">
+            <label for="competitie">Competiție principală</label>
+            <select id="competitie" name="competitie">
+              <option value="">— Selectează —</option>
+              <option>Campionat Național Juniori</option>
+              <option>Liga Elitelor</option>
+              <option>Cupă Națională Juniori</option>
+              <option>Cupă Elitelor</option>
+              <option>Liga 3 Juniori</option>
+              <option>Mai multe competiții</option>
+            </select>
+          </div>
+
+          <button type="submit" class="btn-demo">Solicită demo gratuit</button>
+        </form>
+
+        <p class="demo-note">Nu trimitem spam. Datele tale sunt folosite exclusiv pentru a-ți pregăti demonstrația.</p>
+
+        <div class="form-success" id="formSuccess">
+          <p>✓ Cererea a fost trimisă! Te contactăm în maxim 24h.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2025 IDC Dellesport Business SRL · <a href="mailto:idcdellesportbusiness@gmail.com">idcdellesportbusiness@gmail.com</a> · <a href="https://primulantrenament.com">primulantrenament.com</a></p>
+  </footer>
+
+  <script>
+    if (window.location.search.includes('demo=1')) {
+      document.getElementById('formSuccess').style.display = 'block';
+      document.getElementById('demoForm').style.display = 'none';
+    }
+  </script>
+
+</body>
+</html>
