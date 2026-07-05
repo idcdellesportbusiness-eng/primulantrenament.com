@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DEMO — Campionat Național Juniori | IDC Sports Management</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1A2F5A;
+    --navy-light: #243f75;
+    --green: #1a6b35;
+    --green-bright: #22a64a;
+    --red: #c0392b;
+    --red-light: #ffebeb;
+    --orange: #e67e22;
+    --orange-light: #fff3e0;
+    --yellow: #f39c12;
+    --yellow-light: #fffde7;
+    --blue-ms: #1565c0;
+    --blue-ms-light: #e3f2fd;
+    --white: #ffffff;
+    --grey-bg: #f4f6fb;
+    --grey-border: #dde3ef;
+    --grey-light: #f9fafc;
+    --text-dark: #1a2340;
+    --text-mid: #4a5568;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Barlow', sans-serif; background: var(--grey-bg); color: var(--text-dark); min-height: 100vh; -webkit-text-size-adjust: 100%; }
+
+  /* DISCLAIMER */
+  #disclaimer-overlay { position: fixed; inset: 0; z-index: 1000; background: rgba(10,18,40,0.93); display: flex; align-items: center; justify-content: center; padding: 16px; }
+  .disc-box { background: white; border-radius: 14px; max-width: 500px; width: 100%; overflow: hidden; box-shadow: 0 24px 60px rgba(0,0,0,0.5); }
+  .disc-head { background: var(--navy); padding: 18px 22px; display: flex; align-items: center; gap: 12px; }
+  .disc-head .ico { font-size: 26px; }
+  .disc-head h2 { font-family: 'Barlow Condensed', sans-serif; font-size: 17px; font-weight: 800; color: white; letter-spacing: 0.5px; line-height: 1.2; }
+  .disc-head p { font-size: 11px; color: #90aad4; margin-top: 2px; }
+  .disc-body { padding: 18px 22px; }
+  .disc-body p { font-size: 13px; line-height: 1.7; color: var(--text-mid); margin-bottom: 10px; }
+  .warn-box { background: #fff8e1; border-left: 4px solid var(--yellow); border-radius: 6px; padding: 12px 14px; margin: 12px 0; font-size: 13px; line-height: 1.6; color: #5d4037; }
+  .warn-box strong { color: #3e2400; }
+  .disc-check { display: flex; align-items: flex-start; gap: 10px; margin: 14px 0 18px; cursor: pointer; }
+  .disc-check input { width: 18px; height: 18px; margin-top: 2px; accent-color: var(--navy); cursor: pointer; flex-shrink: 0; }
+  .disc-check span { font-size: 13px; color: var(--text-dark); line-height: 1.5; }
+  #accept-btn { width: 100%; background: #ccc; color: white; border: none; padding: 13px; border-radius: 8px; font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 800; letter-spacing: 1px; cursor: not-allowed; transition: all 0.2s; }
+  #accept-btn.active { background: var(--green); cursor: pointer; }
+
+  /* HEADER */
+  header { background: var(--navy); padding: 0 12px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 12px rgba(0,0,0,0.3); }
+  .hdr-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 10px 0; gap: 10px; flex-wrap: wrap; }
+  .logo-area { display: flex; align-items: center; gap: 8px; }
+  .logo-ico { width: 36px; height: 36px; background: var(--green); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+  .logo-txt h1 { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 800; color: white; letter-spacing: 0.5px; line-height: 1.1; }
+  .logo-txt p { font-size: 10px; color: #90aad4; }
+  .comp-badge { background: var(--green); color: white; padding: 5px 12px; border-radius: 20px; font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.5px; }
+
+  main { max-width: 1200px; margin: 0 auto; padding: 12px; }
+
+  /* CLUB BAR */
+  .club-bar { background: white; border-radius: 10px; padding: 10px 14px; margin-bottom: 10px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; box-shadow: 0 1px 4px rgba(0,0,0,0.06); border: 1px solid var(--grey-border); }
+  .club-bar label { font-size: 10px; font-weight: 700; color: var(--text-mid); letter-spacing: 0.5px; text-transform: uppercase; }
+  .club-bar input { border: 1px solid var(--grey-border); border-radius: 6px; padding: 5px 10px; font-family: 'Barlow', sans-serif; font-size: 13px; color: var(--text-dark); background: var(--grey-bg); }
+  .club-bar input:focus { outline: 2px solid var(--navy); border-color: transparent; }
+  .cat-select { border: 1px solid var(--grey-border); border-radius: 6px; padding: 5px 10px; font-family: 'Barlow', sans-serif; font-size: 13px; color: var(--text-dark); background: var(--grey-bg); cursor: pointer; }
+  .season-lbl { margin-left: auto; font-family: 'Barlow Condensed', sans-serif; font-size: 12px; color: var(--text-mid); font-weight: 600; }
+
+  /* LINKS */
+  .links-panel { background: white; border-radius: 10px; padding: 10px 14px; margin-bottom: 10px; border: 1px solid var(--grey-border); display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .links-panel .lp-label { font-size: 11px; font-weight: 700; color: var(--text-mid); letter-spacing: 0.5px; text-transform: uppercase; flex-shrink: 0; }
+  .lp-link { display: inline-flex; align-items: center; gap: 5px; background: var(--navy); color: white; padding: 5px 12px; border-radius: 20px; font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.3px; text-decoration: none; transition: background 0.15s; }
+  .lp-link:hover { background: var(--navy-light); }
+  .lp-link.red { background: var(--red); }
+  .lp-link.red:hover { background: #a93226; }
+
+  /* REG TEXT BOX */
+  .reg-text-box { background: white; border-radius: 10px; border: 1px solid var(--grey-border); margin-bottom: 10px; overflow: hidden; }
+  .reg-text-box .rtb-header { background: var(--navy); padding: 9px 14px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; user-select: none; }
+  .reg-text-box .rtb-header h3 { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 700; color: white; letter-spacing: 0.5px; }
+  .reg-text-box .rtb-header .arrow { color: white; font-size: 12px; transition: transform 0.2s; }
+  .reg-text-box .rtb-header.open .arrow { transform: rotate(180deg); }
+  .reg-text-box .rtb-body { padding: 12px 14px; display: none; font-size: 12px; line-height: 1.8; color: var(--text-mid); }
+  .reg-text-box .rtb-body.open { display: block; }
+  .rtb-article { margin-bottom: 14px; padding-bottom: 14px; border-bottom: 1px solid var(--grey-border); }
+  .rtb-article:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .rtb-article .art-title { font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 800; color: var(--navy); letter-spacing: 0.3px; margin-bottom: 6px; text-transform: uppercase; }
+  .rtb-article .art-source { font-size: 10px; color: #aab; font-style: italic; margin-top: 6px; }
+  .rtb-hl { border-left: 3px solid var(--blue-ms); background: var(--blue-ms-light); border-radius: 4px; padding: 6px 10px; margin: 5px 0; font-weight: 600; color: var(--text-dark); font-size: 12px; }
+  .rtb-hl.orange { border-color: var(--orange); background: var(--orange-light); color: #5d3200; }
+  .rtb-hl.red { border-color: var(--red); background: var(--red-light); color: var(--red); }
+
+  /* REG INFO */
+  .reg-info { background: white; border-radius: 10px; padding: 10px 14px; margin-bottom: 10px; border: 1px solid var(--grey-border); font-size: 12px; color: var(--text-mid); line-height: 1.6; }
+  .reg-info strong { color: var(--navy); }
+  .reg-pills { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
+  .reg-pill { background: var(--blue-ms-light); color: var(--blue-ms); border-radius: 20px; padding: 2px 10px; font-size: 11px; font-weight: 700; font-family: 'Barlow Condensed', sans-serif; }
+
+  /* LEGEND */
+  .legend { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+  .leg-item { display: flex; align-items: center; gap: 5px; background: white; border-radius: 6px; padding: 4px 9px; font-size: 11px; font-weight: 600; border: 1px solid var(--grey-border); color: var(--text-mid); }
+  .leg-dot { width: 9px; height: 9px; border-radius: 50%; }
+
+  /* SUMMARY */
+  .summary { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin-bottom: 10px; }
+  @media(max-width:480px){ .summary { grid-template-columns: repeat(2,1fr); } }
+  .sum-card { background: white; border-radius: 10px; padding: 12px; text-align: center; border: 1px solid var(--grey-border); }
+  .sum-card .num { font-family: 'Barlow Condensed', sans-serif; font-size: 30px; font-weight: 800; line-height: 1; }
+  .sum-card .lbl { font-size: 10px; font-weight: 600; color: var(--text-mid); letter-spacing: 0.5px; text-transform: uppercase; margin-top: 3px; }
+  .c-ok .num { color: var(--green-bright); }
+  .c-warn .num { color: var(--yellow); }
+  .c-susp .num { color: var(--red); }
+  .c-disc .num { color: var(--orange); }
+
+  /* TABLE */
+  .tbl-outer { background: white; border-radius: 12px; border: 1px solid var(--grey-border); box-shadow: 0 2px 8px rgba(0,0,0,0.06); overflow: hidden; }
+  .tbl-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .scroll-hint { text-align: center; padding: 5px; font-size: 11px; color: var(--text-mid); background: var(--grey-bg); border-bottom: 1px solid var(--grey-border); display: none; }
+  @media(max-width:768px){ .scroll-hint { display: block; } }
+  table { border-collapse: collapse; }
+  th.sticky, td.sticky { position: sticky; left: 0; z-index: 2; background: inherit; }
+  th.sticky2, td.sticky2 { position: sticky; left: 32px; z-index: 2; background: inherit; box-shadow: 2px 0 4px rgba(0,0,0,0.08); }
+  thead tr { background: var(--navy); }
+  thead th { padding: 8px 5px; font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; color: white; letter-spacing: 0.4px; text-align: center; white-space: nowrap; border-right: 1px solid rgba(255,255,255,0.1); }
+  thead th.sticky { background: var(--navy); left: 0; width: 32px; }
+  thead th.sticky2 { background: var(--navy); left: 32px; min-width: 130px; text-align: left; padding-left: 10px; }
+  tbody tr { border-bottom: 1px solid var(--grey-border); }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:nth-child(even) td { background: var(--grey-light); }
+  tbody tr:hover td { background: #eef2fb !important; }
+  td { padding: 6px 4px; font-size: 12px; text-align: center; vertical-align: middle; border-right: 1px solid var(--grey-border); }
+  td.sticky { width: 32px; color: #aab; font-size: 11px; }
+  td.sticky2 { min-width: 130px; text-align: left; }
+  td.sticky2 input { border: none; background: transparent; font-family: 'Barlow', sans-serif; font-size: 12px; font-weight: 500; color: var(--text-dark); width: 120px; padding: 2px 0 2px 8px; }
+  td.sticky2 input:focus { outline: none; border-bottom: 2px solid var(--navy); }
+  td.mc { width: 32px; padding: 3px 2px; }
+  td.mc input { width: 28px; height: 26px; border: 1px solid #dde3ef; border-radius: 4px; text-align: center; font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; color: var(--text-dark); background: white; text-transform: uppercase; transition: background 0.1s, border-color 0.1s; -webkit-appearance: none; }
+  td.mc input:focus { outline: 2px solid var(--navy); border-color: transparent; }
+  td.mc input.ms  { background: var(--blue-ms-light) !important; border-color: var(--blue-ms) !important; color: var(--blue-ms) !important; font-weight: 800; }
+  td.mc input.ir  { background: var(--red-light) !important; border-color: var(--red) !important; color: var(--red) !important; }
+  td.mc input.elimgg { background: var(--red-light) !important; border-color: var(--red) !important; color: var(--red) !important; }
+  td.c-tot { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 800; width: 36px; }
+  td.c-susp { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 700; width: 40px; color: var(--red); }
+  td.c-disc { width: 44px; }
+  td.c-disc input { width: 36px; height: 24px; border: 1px solid #dde3ef; border-radius: 4px; text-align: center; font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; color: var(--red); background: white; }
+  td.c-disc input:focus { outline: 2px solid var(--red); }
+  td.c-status { min-width: 130px; padding: 3px 6px; }
+  .badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 8px; border-radius: 20px; font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.3px; white-space: nowrap; }
+  .b-ok   { background: #e8f5e9; color: #2e7d32; }
+  .b-warn { background: var(--yellow-light); color: #856404; }
+  .b-susp { background: var(--red-light); color: var(--red); }
+  .b-disc { background: var(--orange-light); color: #8b4513; }
+  tfoot tr { background: var(--navy); }
+  tfoot td { padding: 8px 4px; font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; color: white; text-align: center; border-right: 1px solid rgba(255,255,255,0.1); }
+  tfoot td.sticky, tfoot td.sticky2 { background: var(--navy); }
+  tfoot td.sticky2 { text-align: left; padding-left: 10px; }
+  footer { text-align: center; padding: 16px 12px; font-size: 10px; color: #aab; line-height: 1.6; max-width: 1200px; margin: 0 auto; }
+  footer strong { color: var(--navy); }
+</style>
+</head>
+<body>
+<div style="background:#c0392b;color:white;text-align:center;padding:8px 16px;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;letter-spacing:2px;position:sticky;top:0;z-index:200;">⚠️ VERSIUNE DEMO — IDC Sports Management · primulantrenament.com</div>
+
+<div style="background:#c0392b;color:white;text-align:center;padding:8px 16px;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;letter-spacing:2px;position:sticky;top:0;z-index:200;">⚠️ VERSIUNE DEMO — IDC Sports Management · primulantrenament.com</div>
+
+<!-- DISCLAIMER -->
+<div id="disclaimer-overlay">
+  <div class="disc-box">
+    <div class="disc-head">
+      <div class="ico">🛡️</div>
+      <div>
+        <h2>IDC SPORTS MANAGEMENT</h2>
+        <p>DEMO — Campionat Național Juniori</p>
+      </div>
+    </div>
+    <div class="disc-body">
+      <p>Bine ați venit în aplicația de gestionare a suspendărilor pentru <strong>Campionatul Național Juniori FRF</strong> (U19/U17 și U16/U15).</p>
+      <div class="warn-box">
+        ⚠️ <strong>Disclaimer important:</strong> Acest instrument are exclusiv rol informativ și de asistență administrativă. Informațiile afișate nu înlocuiesc regulamentele oficiale FRF, hotărârile Comisiei de Disciplină sau orice altă decizie oficială.
+        <br><br>
+        <strong>Întreaga responsabilitate pentru corectitudinea datelor introduse și pentru deciziile luate pe baza acestora revine în totalitate utilizatorului.</strong> IDC Sports Management nu răspunde pentru nicio consecință sportivă, administrativă sau juridică rezultată din utilizarea acestei aplicații.
+      </div>
+      <p>Verificați întotdeauna situația oficială pe platforma și comunicatele FRF.</p>
+      <label class="disc-check">
+        <input type="checkbox" id="disc-cb" onchange="toggleAccept()">
+        <span>Am citit, am înțeles și sunt de acord că <strong>întreaga responsabilitate pentru datele introduse și deciziile luate îmi aparține în totalitate.</strong></span>
+      </label>
+      <button id="accept-btn" disabled onclick="acceptDisc()">ACCESEAZĂ APLICAȚIA</button>
+    </div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="hdr-inner">
+    <div class="logo-area">
+      <div class="logo-ico">⚽</div>
+      <div class="logo-txt">
+        <h1>IDC SPORTS MANAGEMENT</h1>
+        <p>primulantrenament.com</p>
+      </div>
+    </div>
+    <div class="comp-badge">🏆 DEMO — CAMPIONAT NAȚIONAL</div>
+  </div>
+</header>
+
+<main>
+  <!-- CLUB BAR -->
+  <div class="club-bar">
+    <label>CLUB</label>
+    <input type="text" id="inp-club" placeholder="Numele clubului..." oninput="save()">
+    <label>CATEGORIE</label>
+    <select class="cat-select" id="inp-cat" onchange="save()">
+      <option value="">Selectați...</option>
+      <option value="U19">U19</option>
+      <option value="U17">U17</option>
+      <option value="U16">U16</option>
+      <option value="U15">U15</option>
+    </select>
+    <label>SERIE</label>
+    <input type="text" id="inp-serie" placeholder="ex: Seria 3" style="width:100px" oninput="save()">
+    <div class="season-lbl">Sezon 2025–2026 · 27 etape · Sezon simplu</div>
+  </div>
+
+  <!-- LINKS -->
+  <div class="links-panel">
+    <span class="lp-label">🔗 Resurse oficiale FRF:</span>
+    <a class="lp-link" href="https://www.frf.ro/cat/documente-frf/hotarari-comisii/comisia-de-disciplina/" target="_blank">⚖️ Comisia de Disciplină</a>
+    <a class="lp-link red" href="https://www.frf.ro/documente-frf/hotarari-comisii/comisia-de-recurs/" target="_blank">📋 Comisia de Recurs</a>
+  </div>
+
+  <!-- REG TEXT BOX — ARTICOLE RD FRF COMPLETE -->
+  <div class="reg-text-box">
+    <div class="rtb-header" onclick="toggleReg(this)">
+      <h3>📖 Prevederi regulamentare RD FRF privind suspendările — apasă pentru detalii</h3>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="rtb-body">
+
+      <!-- ART 39 -->
+      <div class="rtb-article">
+        <div class="art-title">Art. 39 — Evidența cartonașelor și responsabilitatea cluburilor</div>
+        <div class="rtb-hl"><strong>Pct. 1:</strong> Evidența cartonașelor revine atât FRF/AJF, cât și fiecărui club în parte.</div>
+        <div class="rtb-hl"><strong>Pct. 2:</strong> Cluburile sunt direct responsabile pentru executarea corectă și la timp a sancțiunilor jucătorilor lor.</div>
+        <div class="art-source">Sursă: Regulament Disciplinar FRF — Art. 39, pct. 1+2</div>
+      </div>
+
+      <!-- ART 41 -->
+      <div class="rtb-article">
+        <div class="art-title">Art. 41 — Reguli de executare a suspendărilor</div>
+        <div class="rtb-hl"><strong>Pct. 1a:</strong> Suspendarea se execută în ordinea cronologică a desfășurării jocurilor.</div>
+        <div class="rtb-hl"><strong>Pct. 1b:</strong> Juniorul suspendat nu are drept de joc în <em>nicio</em> competiție oficială pe durata suspendării. Etapele de suspendare se calculează exclusiv din competiția în care s-a produs abaterea.<br><small style="font-weight:400;color:var(--text-mid)">Excepție: Cupa/Super Cupa României la juniori — conform regulamentului specific.</small></div>
+        <div class="rtb-hl"><strong>Pct. 1c+d:</strong> La cluburi cu mai multe echipe — jucătorul suspendat nu joacă la niciuna. La transfer — suspendarea continuă și se execută la noul club.</div>
+        <div class="rtb-hl"><strong>Pct. 1e:</strong> Se numără <strong>etape</strong>, nu meciuri. O etapă = un meci în competiția respectivă.</div>
+        <div class="rtb-hl orange"><strong>Pct. 1g:</strong> Eliminatul (roșu direct sau GG) nu are drept de joc până la hotărârea disciplinară. Termen maxim: <strong>5 zile</strong> (sau <strong>2 zile</strong> dacă există etape intermediare în interval).</div>
+        <div class="rtb-hl"><strong>Pct. 1h:</strong> Dacă echipa nu se prezintă la meci, suspendarea se execută oricum — etapa se consideră consumată.</div>
+        <div class="rtb-hl orange">
+          <strong>Pct. 2 + 2.1 — Praguri acumulare cartonașe galbene (numărătoare continuă, fără întrerupere):</strong><br>
+          → <strong>4G</strong> cumulate → suspendat 1 etapă<br>
+          → <strong>7G</strong> cumulate → suspendat 1 etapă<br>
+          → <strong>9G</strong> cumulate → suspendat 1 etapă<br>
+          → <strong>10G</strong> cumulate → suspendat 1 etapă<br>
+          → <strong>11G, 12G, 13G...</strong> → câte 1 etapă suspendare la fiecare galben nou<br>
+          <small style="font-weight:400">Numărătoarea este continuă pe tot sezonul — galbenele se acumulează de la 1 la 4, 5, 6, 7, 8, 9, 10, 11... fără întrerupere.</small>
+        </div>
+        <div class="art-source">Sursă: Regulament Disciplinar FRF — Art. 41, pct. 1a / 1b / 1c+d / 1e / 1g / 1h / 2+2.1</div>
+      </div>
+
+      <!-- GG -->
+      <div class="rtb-article">
+        <div class="art-title">Două cartonașe galbene în același meci (GG) — Eliminare</div>
+        <div class="rtb-hl">Două cartonașe galbene în același joc = eliminare (cartonaș roșu indirect) + suspendare automată 1 joc. Cele două galbene se anulează și nu intră în cumulul de avertismente.</div>
+        <div class="art-source">Sursă: Regulament Disciplinar FRF</div>
+      </div>
+
+      <!-- Roșu direct -->
+      <div class="rtb-article">
+        <div class="art-title">Roșu direct — Sancțiune Comisia de Disciplină</div>
+        <div class="rtb-hl red">Numărul de etape de suspendare pentru roșu direct se stabilește de Comisia de Disciplină a FRF, în funcție de gravitatea abaterii. Jucătorul nu are drept de joc până la hotărârea disciplinară (max. 5 zile / 2 zile dacă există etape intermediare).</div>
+        <div class="art-source">Sursă: Regulament Disciplinar FRF</div>
+      </div>
+
+      <!-- Participare neregulamentară -->
+      <div class="rtb-article">
+        <div class="art-title">Art. 66 — Participare neregulamentară</div>
+        <div class="rtb-hl orange">Jucător care participă pentru alt club decât cel la care este legitimat → suspendare 8–12 jocuri. Antrenorii/oficialii care au cunoștință → suspendare 2–6 jocuri.</div>
+        <div class="art-source">Sursă: Regulament Disciplinar FRF — Art. 66</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- REG INFO -->
+  <div class="reg-info">
+    <strong>Praguri suspendare automată</strong> — Campionat Național (numărătoare continuă pe tot sezonul):
+    <div class="reg-pills">
+      <span class="reg-pill">🔵 4G → susp. 1 etapă</span>
+      <span class="reg-pill">🔵 7G → susp. 1 etapă</span>
+      <span class="reg-pill">🔵 9G → susp. 1 etapă</span>
+      <span class="reg-pill">🔵 10G → susp. 1 etapă</span>
+      <span class="reg-pill">🔵 11G+ → câte 1 etapă per galben</span>
+      <span class="reg-pill">🔴 Roșu / GG → Comisia Disciplină FRF</span>
+    </div>
+  </div>
+
+  <!-- LEGEND -->
+  <div class="legend">
+    <div class="leg-item"><div class="leg-dot" style="background:#1565c0"></div>Etapă prag (4/7/9/10+G)</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#f39c12"></div>Atenție (3G)</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#c0392b"></div>Suspendat auto</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#e67e22"></div>Verifică Disciplina</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#2e7d32"></div>Disponibil</div>
+  </div>
+
+  <!-- SUMMARY -->
+  <div class="summary" id="summary"></div>
+
+  <!-- TABLE -->
+  <div class="tbl-outer">
+    <div class="scroll-hint">← Derulați orizontal pentru toate etapele →</div>
+    <div class="tbl-scroll">
+      <table id="main-table">
+        <thead id="thead"></thead>
+        <tbody id="tbody"></tbody>
+        <tfoot id="tfoot"></tfoot>
+      </table>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <strong>IDC Sports Management</strong> · primulantrenament.com · idcdellesportbusiness@gmail.com<br>
+  Instrument informativ. Responsabilitatea corectitudinii datelor revine integral utilizatorului.<br>
+  Verificați întotdeauna situația oficială pe platforma și comunicatele oficiale ale FRF.
+</footer>
+
+<script>
+const ETAPE = 27;
+const PLAYERS = 25;
+const STORAGE_KEY = 'idc_demo_campionat';
+
+let state = {
+  club: '', cat: '', serie: '',
+  players: initPlayers()
+};
+
+function initPlayers() {
+  return Array.from({length: PLAYERS}, (_, i) => ({
+    name: `Jucător ${i+1}`,
+    matches: Array(ETAPE).fill(''),
+    disc: 0
+  }));
+}
+
+// ── DISCLAIMER ──────────────────────────────────────────
+function toggleAccept() {
+  const ok = document.getElementById('disc-cb').checked;
+  const btn = document.getElementById('accept-btn');
+  btn.disabled = !ok;
+  btn.classList.toggle('active', ok);
+}
+function acceptDisc() {
+  if (!document.getElementById('disc-cb').checked) return;
+  document.getElementById('disclaimer-overlay').style.display = 'none';
+}
+function toggleReg(header) {
+  header.classList.toggle('open');
+  header.nextElementSibling.classList.toggle('open');
+}
+
+// ── LOGICĂ ──────────────────────────────────────────────
+function countG(matches) {
+  return matches.reduce((a, v) => {
+    const u = (v||'').trim().toUpperCase();
+    return a + (u==='G' ? 1 : 0); // GG = eliminare, galbenele se anulează
+  }, 0);
+}
+
+// Numărătoare continuă, fără întrerupere
+// Praguri: 4, 7, 9, 10, 11, 12, 13...
+function calcSusp(total) {
+  if (total < 4)  return 0;
+  if (total < 7)  return 1;
+  if (total < 9)  return 2;
+  if (total < 10) return 3;
+  // de la 10 în sus: câte 1 etapă per galben față de pragul 9
+  return 3 + (total - 9);
+}
+
+// Returnează indexul meciurilor care sunt prag de suspendare
+function getMilestones(matches) {
+  const total = countG(matches);
+  const ms = new Set();
+  // praguri fixe + continue de la 10
+  const thresholds = [4, 7, 9];
+  for (let t = 10; t <= total; t++) thresholds.push(t);
+
+  thresholds.forEach(t => {
+    if (total >= t) {
+      let run = 0;
+      for (let i = 0; i < matches.length; i++) {
+        const u = (matches[i]||'').trim().toUpperCase();
+        run += u==='G' ? 1 : 0; // GG = eliminare, nu contează la galbene
+        if (run >= t) { ms.add(i); break; }
+      }
+    }
+  });
+  return ms;
+}
+
+function hasRed(m) { return m.some(v => (v||'').trim().toUpperCase()==='R'); }
+function hasGG(m)  { return m.some(v => (v||'').trim().toUpperCase()==='GG'); }
+
+function getStatus(p) {
+  const total = countG(p.matches);
+  const susp  = calcSusp(total);
+  const disc  = parseInt(p.disc)||0;
+  if (hasRed(p.matches) || hasGG(p.matches)) return 'disc';
+  if (susp > 0 || disc > 0) return 'susp';
+  if (total === 3) return 'warn';
+  return 'ok';
+}
+
+function badge(s) {
+  const m = {
+    ok:   ['✅ Disponibil',          'b-ok'],
+    warn: ['🟡 Atenție — 1 galben',  'b-warn'],
+    susp: ['🔴 Suspendat',           'b-susp'],
+    disc: ['⚠️ Verifică Disciplina', 'b-disc'],
+  };
+  return `<span class="badge ${m[s][1]}">${m[s][0]}</span>`;
+}
+
+// ── BUILD HEAD ───────────────────────────────────────────
+function buildHead() {
+  const tr = document.createElement('tr');
+
+  const thNr = document.createElement('th'); thNr.className='sticky'; thNr.textContent='Nr.'; tr.appendChild(thNr);
+  const thName = document.createElement('th'); thName.className='sticky2'; thName.textContent='Nume Jucător'; tr.appendChild(thName);
+
+  for (let e = 1; e <= ETAPE; e++) {
+    const th = document.createElement('th');
+    th.textContent = `E${e}`; th.style.minWidth='32px';
+    tr.appendChild(th);
+  }
+
+  ['G', 'Susp.', 'Disc.', 'STATUS'].forEach(h => {
+    const th = document.createElement('th');
+    th.textContent = h;
+    if (h==='STATUS') th.style.minWidth='130px';
+    tr.appendChild(th);
+  });
+
+  document.getElementById('thead').appendChild(tr);
+}
+
+// ── RENDER ───────────────────────────────────────────────
+function render() {
+  const tbody = document.getElementById('tbody');
+  tbody.innerHTML = '';
+
+  let totG=0, nOk=0, nWarn=0, nSusp=0, nDisc=0;
+  const etapeTotals = Array(ETAPE).fill(0);
+
+  state.players.forEach((p, pi) => {
+    const total  = countG(p.matches);
+    const susp   = calcSusp(total);
+    const status = getStatus(p);
+    const ms     = getMilestones(p.matches);
+
+    totG += total;
+    if (status==='ok')   nOk++;
+    if (status==='warn') nWarn++;
+    if (status==='susp') nSusp++;
+    if (status==='disc') nDisc++;
+
+    const tr = document.createElement('tr');
+
+    // Nr
+    const tdNr = document.createElement('td'); tdNr.className='sticky'; tdNr.textContent=pi+1; tr.appendChild(tdNr);
+    // Nume
+    const tdN = document.createElement('td'); tdN.className='sticky2';
+    const ni = document.createElement('input'); ni.type='text'; ni.value=p.name; ni.placeholder=`Jucător ${pi+1}`;
+    ni.addEventListener('input', e => { p.name=e.target.value; save(); });
+    tdN.appendChild(ni); tr.appendChild(tdN);
+
+    // Meciuri
+    p.matches.forEach((val, mi) => {
+      const td = document.createElement('td'); td.className='mc';
+      const inp = document.createElement('input');
+      inp.type='text'; inp.maxLength=2; inp.value=val;
+      const u = (val||'').trim().toUpperCase();
+      if (ms.has(mi))    inp.classList.add('ms');
+      else if (u==='R')  inp.classList.add('ir');
+      else if (u==='GG') inp.classList.add("elimgg");
+      inp.addEventListener('input', e => { p.matches[mi]=e.target.value; save(); render(); });
+      if (u && u!=='-') etapeTotals[mi]++;
+      td.appendChild(inp); tr.appendChild(td);
+    });
+
+    // Total G
+    const tdG = document.createElement('td'); tdG.className='c-tot';
+    tdG.textContent = total||'—';
+    tdG.style.color = total>=4 ? 'var(--red)' : total===3 ? 'var(--yellow)' : 'var(--text-mid)';
+    tr.appendChild(tdG);
+
+    // Susp auto
+    const tdS = document.createElement('td'); tdS.className='c-susp'; tdS.textContent=susp||'—';
+    tr.appendChild(tdS);
+
+    // Disc manual
+    const tdD = document.createElement('td'); tdD.className='c-disc';
+    const di = document.createElement('input'); di.type='number'; di.min=0; di.max=20; di.value=p.disc||0;
+    di.addEventListener('input', e => { p.disc=e.target.value; save(); render(); });
+    tdD.appendChild(di); tr.appendChild(tdD);
+
+    // Status
+    const tdSt = document.createElement('td'); tdSt.className='c-status'; tdSt.innerHTML=badge(status);
+    tr.appendChild(tdSt);
+
+    tbody.appendChild(tr);
+  });
+
+  // TFOOT
+  const tfoot = document.getElementById('tfoot');
+  tfoot.innerHTML = '';
+  const fr = document.createElement('tr');
+  const ftNr = document.createElement('td'); ftNr.className='sticky'; fr.appendChild(ftNr);
+  const ftN  = document.createElement('td'); ftN.className='sticky2'; ftN.textContent='TOTALE ECHIPĂ'; fr.appendChild(ftN);
+  etapeTotals.forEach(t => { const td=document.createElement('td'); td.textContent=t||'—'; fr.appendChild(td); });
+  const ftG = document.createElement('td'); ftG.className='c-tot'; ftG.textContent=totG; fr.appendChild(ftG);
+  const ftS = document.createElement('td'); ftS.className='c-susp'; ftS.textContent=nSusp+nDisc; fr.appendChild(ftS);
+  fr.appendChild(document.createElement('td'));
+  const ftSt = document.createElement('td'); ftSt.className='c-status'; ftSt.style.fontSize='11px';
+  ftSt.textContent=`${nSusp+nDisc} susp. · ${nWarn} atenție`; fr.appendChild(ftSt);
+  tfoot.appendChild(fr);
+
+  // SUMMARY
+  document.getElementById('summary').innerHTML=`
+    <div class="sum-card c-ok"><div class="num">${nOk}</div><div class="lbl">Disponibili</div></div>
+    <div class="sum-card c-warn"><div class="num">${nWarn}</div><div class="lbl">Atenție</div></div>
+    <div class="sum-card c-susp"><div class="num">${nSusp}</div><div class="lbl">Suspendați</div></div>
+    <div class="sum-card c-disc"><div class="num">${nDisc}</div><div class="lbl">Verifică Disc.</div></div>
+  `;
+}
+
+// ── SAVE / LOAD ───────────────────────────────────────────
+function save() {
+  state.club  = document.getElementById('inp-club').value;
+  state.cat   = document.getElementById('inp-cat').value;
+  state.serie = document.getElementById('inp-serie').value;
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e) {}
+}
+
+function load() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const s = JSON.parse(raw);
+      if (s.players) s.players.forEach(p => {
+        while (p.matches.length < ETAPE) p.matches.push('');
+      });
+      state = s;
+      document.getElementById('inp-club').value  = state.club||'';
+      document.getElementById('inp-cat').value   = state.cat||'';
+      document.getElementById('inp-serie').value = state.serie||'';
+    }
+  } catch(e) {}
+}
+
+buildHead();
+load();
+render();
+</script>
+</body>
+</html>

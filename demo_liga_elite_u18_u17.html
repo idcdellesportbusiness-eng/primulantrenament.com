@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DEMO — Liga Elitelor U18/U17 | IDC Sports Management</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1A2F5A;
+    --navy-light: #243f75;
+    --green: #1a6b35;
+    --green-bright: #22a64a;
+    --red: #c0392b;
+    --red-light: #ffebeb;
+    --orange: #e67e22;
+    --orange-light: #fff3e0;
+    --yellow: #f39c12;
+    --yellow-light: #fffde7;
+    --blue-ms: #1565c0;
+    --blue-ms-light: #e3f2fd;
+    --teal: #00695c;
+    --teal-light: #e0f2f1;
+    --grey-bg: #f4f6fb;
+    --grey-border: #dde3ef;
+    --grey-light: #f9fafc;
+    --text-dark: #1a2340;
+    --text-mid: #4a5568;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Barlow', sans-serif; background: var(--grey-bg); color: var(--text-dark); min-height: 100vh; -webkit-text-size-adjust: 100%; }
+
+  /* DISCLAIMER */
+  #disclaimer-overlay { position: fixed; inset: 0; z-index: 1000; background: rgba(10,18,40,0.93); display: flex; align-items: center; justify-content: center; padding: 16px; }
+  .disc-box { background: white; border-radius: 14px; max-width: 500px; width: 100%; overflow: hidden; box-shadow: 0 24px 60px rgba(0,0,0,0.5); }
+  .disc-head { background: var(--navy); padding: 18px 22px; display: flex; align-items: center; gap: 12px; }
+  .disc-head h2 { font-family: 'Barlow Condensed', sans-serif; font-size: 17px; font-weight: 800; color: white; letter-spacing: 0.5px; line-height: 1.2; }
+  .disc-head p { font-size: 11px; color: #90aad4; margin-top: 2px; }
+  .disc-body { padding: 18px 22px; }
+  .disc-body p { font-size: 13px; line-height: 1.7; color: var(--text-mid); margin-bottom: 10px; }
+  .warn-box { background: #fff8e1; border-left: 4px solid var(--yellow); border-radius: 6px; padding: 12px 14px; margin: 12px 0; font-size: 13px; line-height: 1.6; color: #5d4037; }
+  .warn-box strong { color: #3e2400; }
+  .disc-check { display: flex; align-items: flex-start; gap: 10px; margin: 14px 0 18px; cursor: pointer; }
+  .disc-check input { width: 18px; height: 18px; margin-top: 2px; accent-color: var(--navy); cursor: pointer; flex-shrink: 0; }
+  .disc-check span { font-size: 13px; color: var(--text-dark); line-height: 1.5; }
+  #accept-btn { width: 100%; background: #ccc; color: white; border: none; padding: 13px; border-radius: 8px; font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 800; letter-spacing: 1px; cursor: not-allowed; transition: all 0.2s; }
+  #accept-btn.active { background: var(--teal); cursor: pointer; }
+
+  /* HEADER */
+  header { background: var(--navy); padding: 0 12px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 12px rgba(0,0,0,0.3); }
+  .hdr-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 10px 0; gap: 10px; flex-wrap: wrap; }
+  .logo-area { display: flex; align-items: center; gap: 8px; }
+  .logo-ico { width: 36px; height: 36px; background: var(--teal); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+  .logo-txt h1 { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 800; color: white; letter-spacing: 0.5px; line-height: 1.1; }
+  .logo-txt p { font-size: 10px; color: #90aad4; }
+  .comp-badge { background: var(--teal); color: white; padding: 5px 12px; border-radius: 20px; font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.5px; }
+
+  main { max-width: 1200px; margin: 0 auto; padding: 12px; }
+
+  /* CLUB BAR */
+  .club-bar { background: white; border-radius: 10px; padding: 10px 14px; margin-bottom: 10px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; box-shadow: 0 1px 4px rgba(0,0,0,0.06); border: 1px solid var(--grey-border); }
+  .club-bar label { font-size: 10px; font-weight: 700; color: var(--text-mid); letter-spacing: 0.5px; text-transform: uppercase; }
+  .club-bar input, .club-bar select { border: 1px solid var(--grey-border); border-radius: 6px; padding: 5px 10px; font-family: 'Barlow', sans-serif; font-size: 13px; color: var(--text-dark); background: var(--grey-bg); }
+  .club-bar input:focus, .club-bar select:focus { outline: 2px solid var(--navy); border-color: transparent; }
+  .season-lbl { margin-left: auto; font-family: 'Barlow Condensed', sans-serif; font-size: 12px; color: var(--text-mid); font-weight: 600; }
+
+  /* LINKS */
+  .links-panel { background: white; border-radius: 10px; padding: 10px 14px; margin-bottom: 10px; border: 1px solid var(--grey-border); display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .links-panel .lp-label { font-size: 11px; font-weight: 700; color: var(--text-mid); letter-spacing: 0.5px; text-transform: uppercase; flex-shrink: 0; }
+  .lp-link { display: inline-flex; align-items: center; gap: 5px; background: var(--navy); color: white; padding: 5px 12px; border-radius: 20px; font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; text-decoration: none; transition: background 0.15s; }
+  .lp-link:hover { background: var(--navy-light); }
+  .lp-link.red { background: var(--red); }
+  .lp-link.red:hover { background: #a93226; }
+
+  /* REG TEXT BOX */
+  .reg-text-box { background: white; border-radius: 10px; border: 1px solid var(--grey-border); margin-bottom: 10px; overflow: hidden; }
+  .rtb-header { background: var(--navy); padding: 9px 14px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; user-select: none; }
+  .rtb-header h3 { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 700; color: white; letter-spacing: 0.5px; }
+  .rtb-header .arrow { color: white; font-size: 12px; transition: transform 0.2s; }
+  .rtb-header.open .arrow { transform: rotate(180deg); }
+  .rtb-body { padding: 12px 14px; display: none; font-size: 12px; line-height: 1.8; color: var(--text-mid); }
+  .rtb-body.open { display: block; }
+  .rtb-article { margin-bottom: 14px; padding-bottom: 14px; border-bottom: 1px solid var(--grey-border); }
+  .rtb-article:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .art-title { font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 800; color: var(--navy); letter-spacing: 0.3px; margin-bottom: 6px; text-transform: uppercase; }
+  .art-source { font-size: 10px; color: #aab; font-style: italic; margin-top: 6px; }
+  .rtb-hl { border-left: 3px solid var(--blue-ms); background: var(--blue-ms-light); border-radius: 4px; padding: 6px 10px; margin: 5px 0; font-weight: 600; color: var(--text-dark); font-size: 12px; }
+  .rtb-hl.orange { border-color: var(--orange); background: var(--orange-light); color: #5d3200; }
+  .rtb-hl.red { border-color: var(--red); background: var(--red-light); color: var(--red); }
+  .rtb-hl.teal { border-color: var(--teal); background: var(--teal-light); color: var(--teal); }
+
+  /* REG INFO */
+  .reg-info { background: white; border-radius: 10px; padding: 10px 14px; margin-bottom: 10px; border: 1px solid var(--grey-border); font-size: 12px; color: var(--text-mid); line-height: 1.6; }
+  .reg-info strong { color: var(--navy); }
+  .reg-pills { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
+  .reg-pill { background: var(--blue-ms-light); color: var(--blue-ms); border-radius: 20px; padding: 2px 10px; font-size: 11px; font-weight: 700; font-family: 'Barlow Condensed', sans-serif; }
+  .reg-pill.red { background: var(--red-light); color: var(--red); }
+  .reg-pill.teal { background: var(--teal-light); color: var(--teal); }
+
+  /* LEGEND */
+  .legend { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+  .leg-item { display: flex; align-items: center; gap: 5px; background: white; border-radius: 6px; padding: 4px 9px; font-size: 11px; font-weight: 600; border: 1px solid var(--grey-border); color: var(--text-mid); }
+  .leg-dot { width: 9px; height: 9px; border-radius: 50%; }
+
+  /* SUMMARY */
+  .summary { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin-bottom: 10px; }
+  @media(max-width:480px){ .summary { grid-template-columns: repeat(2,1fr); } }
+  .sum-card { background: white; border-radius: 10px; padding: 12px; text-align: center; border: 1px solid var(--grey-border); }
+  .sum-card .num { font-family: 'Barlow Condensed', sans-serif; font-size: 30px; font-weight: 800; line-height: 1; }
+  .sum-card .lbl { font-size: 10px; font-weight: 600; color: var(--text-mid); letter-spacing: 0.5px; text-transform: uppercase; margin-top: 3px; }
+  .c-ok .num { color: var(--green-bright); }
+  .c-warn .num { color: var(--yellow); }
+  .c-susp .num { color: var(--red); }
+  .c-disc .num { color: var(--orange); }
+
+  /* TABLE */
+  .tbl-outer { background: white; border-radius: 12px; border: 1px solid var(--grey-border); box-shadow: 0 2px 8px rgba(0,0,0,0.06); overflow: hidden; margin-bottom: 16px; }
+  .tbl-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .scroll-hint { text-align: center; padding: 5px; font-size: 11px; color: var(--text-mid); background: var(--grey-bg); border-bottom: 1px solid var(--grey-border); display: none; }
+  @media(max-width:900px){ .scroll-hint { display: block; } }
+  table { border-collapse: collapse; width: 100%; }
+
+  th.sticky, td.sticky { position: sticky; left: 0; z-index: 3; background: inherit; }
+  th.sticky2, td.sticky2 { position: sticky; left: 32px; z-index: 3; background: inherit; box-shadow: 2px 0 5px rgba(0,0,0,0.09); }
+
+  /* HEADER ROWS */
+  thead tr.tr-group th { padding: 5px 4px; font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.75); letter-spacing: 0.5px; text-align: center; border-right: 1px solid rgba(255,255,255,0.08); background: #0d2147; text-transform: uppercase; }
+  thead tr.tr-group th.sticky  { background: #0d2147; }
+  thead tr.tr-group th.sticky2 { background: #0d2147; }
+  thead tr.tr-group th.g-reg  { background: #0a3020; color: rgba(255,255,255,0.8); }
+  thead tr.tr-group th.g-po   { background: #003050; color: rgba(255,255,255,0.8); }
+  thead tr.tr-group th.g-pout { background: #3d1a00; color: rgba(255,255,255,0.8); }
+  thead tr.tr-group th.g-stat { background: #0d2147; }
+
+  thead tr.tr-cols th { padding: 7px 4px; font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; color: white; letter-spacing: 0.4px; text-align: center; white-space: nowrap; border-right: 1px solid rgba(255,255,255,0.1); background: var(--navy); }
+  thead tr.tr-cols th.sticky  { background: var(--navy); }
+  thead tr.tr-cols th.sticky2 { background: var(--navy); text-align: left; padding-left: 10px; min-width: 130px; }
+  thead tr.tr-cols th.c-reg  { background: #174a30; }
+  thead tr.tr-cols th.c-po   { background: #0a3d5c; }
+  thead tr.tr-cols th.c-pout { background: #5c2a00; }
+
+  /* SEPARATOR */
+  th.sep, td.sep { width: 10px !important; min-width: 10px !important; padding: 0 !important; border: none !important; background: #b0c4e8 !important; }
+  thead tr.tr-group th.sep { background: #7a96c8 !important; }
+  thead tr.tr-cols th.sep  { background: #7a96c8 !important; }
+  tfoot td.sep { background: #7a96c8 !important; }
+
+  /* RESET LABEL în separator */
+  th.sep-lbl, td.sep-lbl { width: 28px !important; min-width: 28px !important; padding: 2px !important; background: #b0c4e8 !important; border: none !important; }
+  thead tr.tr-group th.sep-lbl { background: #7a96c8 !important; font-size: 8px !important; color: white !important; font-weight: 800; letter-spacing: 0.3px; writing-mode: vertical-rl; text-orientation: mixed; }
+  thead tr.tr-cols th.sep-lbl  { background: #7a96c8 !important; }
+  tfoot td.sep-lbl { background: #7a96c8 !important; }
+  tbody td.sep-lbl { background: #dde8f5 !important; border: none !important; }
+
+  /* BODY */
+  tbody tr { border-bottom: 1px solid var(--grey-border); }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:nth-child(even) td { background: var(--grey-light); }
+  tbody tr:hover td { background: #eef2fb !important; }
+  td { padding: 5px 3px; font-size: 12px; text-align: center; vertical-align: middle; border-right: 1px solid var(--grey-border); }
+  td.sticky { width: 32px; color: #aab; font-size: 11px; }
+  td.sticky2 { min-width: 130px; text-align: left; }
+  td.sticky2 input { border: none; background: transparent; font-family: 'Barlow', sans-serif; font-size: 12px; font-weight: 500; color: var(--text-dark); width: 120px; padding: 2px 0 2px 8px; }
+  td.sticky2 input:focus { outline: none; border-bottom: 2px solid var(--navy); }
+
+  /* MATCH CELLS */
+  td.mc { width: 32px; padding: 3px 2px; }
+  td.mc input { width: 28px; height: 26px; border: 1px solid #dde3ef; border-radius: 4px; text-align: center; font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; color: var(--text-dark); background: white; text-transform: uppercase; transition: background 0.1s; -webkit-appearance: none; }
+  td.mc input:focus { outline: 2px solid var(--navy); border-color: transparent; }
+  td.mc input.ms    { background: var(--blue-ms-light) !important; border-color: var(--blue-ms) !important; color: var(--blue-ms) !important; font-weight: 800; }
+  td.mc input.ir    { background: var(--red-light) !important; border-color: var(--red) !important; color: var(--red) !important; }
+  td.mc input.elimgg { background: var(--red-light) !important; border-color: var(--red) !important; color: var(--red) !important; }
+  td.mc input.ig    { background: var(--yellow-light) !important; border-color: var(--yellow) !important; color: #856404 !important; font-weight: 800; }
+
+  /* Fundaluri subtile per bloc */
+  td.c-reg-bg  { background: #f0faf4 !important; }
+  td.c-po-bg   { background: #e8f4ff !important; }
+  td.c-pout-bg { background: #fff5eb !important; }
+  tbody tr:nth-child(even) td.c-reg-bg  { background: #e2f5ea !important; }
+  tbody tr:nth-child(even) td.c-po-bg   { background: #d8ecff !important; }
+  tbody tr:nth-child(even) td.c-pout-bg { background: #ffecd8 !important; }
+
+  td.c-tot { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 800; width: 34px; }
+  td.c-susp { font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; width: 38px; color: var(--red); }
+  td.c-disc { width: 44px; }
+  td.c-disc input { width: 36px; height: 24px; border: 1px solid #dde3ef; border-radius: 4px; text-align: center; font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; color: var(--red); background: white; }
+  td.c-disc input:focus { outline: 2px solid var(--red); }
+  td.c-status { min-width: 150px; padding: 3px 6px; }
+
+  .badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 8px; border-radius: 20px; font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.3px; white-space: nowrap; }
+  .b-ok    { background: #e8f5e9; color: #2e7d32; }
+  .b-warn  { background: var(--yellow-light); color: #856404; }
+  .b-warn3 { background: var(--orange-light); color: #8b4513; }
+  .b-susp  { background: var(--red-light); color: var(--red); }
+  .b-disc  { background: var(--orange-light); color: #8b4513; }
+
+  tfoot tr { background: var(--navy); }
+  tfoot td { padding: 7px 3px; font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; color: white; text-align: center; border-right: 1px solid rgba(255,255,255,0.1); }
+  tfoot td.sticky, tfoot td.sticky2 { background: var(--navy); }
+  tfoot td.sticky2 { text-align: left; padding-left: 10px; }
+
+  footer { text-align: center; padding: 16px 12px; font-size: 10px; color: #aab; line-height: 1.6; max-width: 1200px; margin: 0 auto; }
+  footer strong { color: var(--navy); }
+</style>
+</head>
+<body>
+<div style="background:#c0392b;color:white;text-align:center;padding:8px 16px;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;letter-spacing:2px;position:sticky;top:0;z-index:200;">⚠️ VERSIUNE DEMO — IDC Sports Management · primulantrenament.com</div>
+
+<div style="background:#c0392b;color:white;text-align:center;padding:8px 16px;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;letter-spacing:2px;position:sticky;top:0;z-index:200;">⚠️ VERSIUNE DEMO — IDC Sports Management · primulantrenament.com</div>
+
+<!-- DISCLAIMER -->
+<div id="disclaimer-overlay">
+  <div class="disc-box">
+    <div class="disc-head">
+      <div style="font-size:26px">🛡️</div>
+      <div>
+        <h2>IDC SPORTS MANAGEMENT</h2>
+        <p>DEMO — Liga Elitelor U18/U17</p>
+      </div>
+    </div>
+    <div class="disc-body">
+      <p>Bine ați venit în aplicația de gestionare a suspendărilor pentru <strong>Liga Elitelor U18 / Liga Elitelor U17 FRF</strong>.</p>
+      <div class="warn-box">
+        ⚠️ <strong>Disclaimer important:</strong> Instrument cu rol exclusiv informativ și de asistență administrativă. Nu înlocuiește regulamentele oficiale FRF sau hotărârile Comisiei de Disciplină.
+        <br><br>
+        <strong>Întreaga responsabilitate pentru datele introduse și deciziile luate revine în totalitate utilizatorului.</strong>
+      </div>
+      <p>Verificați întotdeauna situația oficială pe platforma și comunicatele FRF.</p>
+      <label class="disc-check">
+        <input type="checkbox" id="disc-cb" onchange="toggleAccept()">
+        <span>Am citit și sunt de acord că <strong>întreaga responsabilitate îmi aparține.</strong></span>
+      </label>
+      <button id="accept-btn" disabled onclick="acceptDisc()">ACCESEAZĂ APLICAȚIA</button>
+    </div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="hdr-inner">
+    <div class="logo-area">
+      <div class="logo-ico">⚽</div>
+      <div class="logo-txt">
+        <h1>IDC SPORTS MANAGEMENT</h1>
+        <p>primulantrenament.com</p>
+      </div>
+    </div>
+    <div class="comp-badge">⭐ DEMO — LIGA ELITELOR U18/U17</div>
+  </div>
+</header>
+
+<main>
+  <!-- CLUB BAR -->
+  <div class="club-bar">
+    <label>CLUB</label>
+    <input type="text" id="inp-club" placeholder="Numele clubului..." oninput="save()">
+    <label>CATEGORIE</label>
+    <select id="inp-cat" onchange="save()">
+      <option value="">Selectați...</option>
+      <option value="U18 — Liga Tineret">U18 — Liga Tineret</option>
+      <option value="U17 — Liga Elitelor">U17 — Liga Elitelor</option>
+    </select>
+    <div class="season-lbl">Sezon 2025–2026 · Regular 11E · PO/POut 14E</div>
+  </div>
+
+  <!-- LINKS -->
+  <div class="links-panel">
+    <span class="lp-label">🔗 Resurse oficiale FRF:</span>
+    <a class="lp-link" href="https://www.frf.ro/cat/documente-frf/hotarari-comisii/comisia-de-disciplina/" target="_blank">⚖️ Comisia de Disciplină</a>
+    <a class="lp-link red" href="https://www.frf.ro/documente-frf/hotarari-comisii/comisia-de-recurs/" target="_blank">📋 Comisia de Recurs</a>
+  </div>
+
+  <!-- REG TEXT BOX -->
+  <div class="reg-text-box">
+    <div class="rtb-header" onclick="toggleReg(this)">
+      <h3>📖 Prevederi regulamentare RD FRF privind suspendările — apasă pentru detalii</h3>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="rtb-body">
+      <div class="rtb-article">
+        <div class="art-title">Art. 39 — Evidența cartonașelor și responsabilitatea cluburilor</div>
+        <div class="rtb-hl"><strong>Pct. 1:</strong> Evidența cartonașelor revine atât FRF/AJF, cât și fiecărui club în parte.</div>
+        <div class="rtb-hl"><strong>Pct. 2:</strong> Cluburile sunt direct responsabile pentru executarea corectă și la timp a sancțiunilor jucătorilor lor.</div>
+        <div class="art-source">Sursă: Regulament Disciplinar FRF — Art. 39, pct. 1+2</div>
+      </div>
+      <div class="rtb-article">
+        <div class="art-title">Art. 41 — Reguli de executare a suspendărilor</div>
+        <div class="rtb-hl"><strong>Pct. 1a:</strong> Suspendarea se execută în ordinea cronologică a desfășurării jocurilor.</div>
+        <div class="rtb-hl"><strong>Pct. 1b:</strong> Juniorul suspendat nu are drept de joc în nicio competiție oficială pe durata suspendării. Etapele se calculează exclusiv din competiția în care s-a produs abaterea. <small>(Excepție: Cupa/Super Cupa României la juniori)</small></div>
+        <div class="rtb-hl"><strong>Pct. 1c+d:</strong> La cluburi cu mai multe echipe — nu joacă la niciuna. La transfer — suspendarea continuă la noul club.</div>
+        <div class="rtb-hl"><strong>Pct. 1e:</strong> Se numără <strong>etape</strong>, nu meciuri.</div>
+        <div class="rtb-hl orange"><strong>Pct. 1g:</strong> Eliminatul nu are drept de joc până la hotărârea disciplinară. Termen maxim: <strong>5 zile</strong> (sau <strong>2 zile</strong> dacă există etape intermediare).</div>
+        <div class="rtb-hl"><strong>Pct. 1h:</strong> Dacă echipa nu se prezintă, suspendarea se execută oricum.</div>
+        <div class="rtb-hl orange"><strong>Pct. 2 + 2.1 — Praguri acumulare galbene (numărătoare continuă per fază):</strong><br>
+          → <strong>4G</strong> → susp. 1 etapă · → <strong>7G</strong> → susp. 1 etapă · → <strong>9G</strong> → susp. 1 etapă<br>
+          → <strong>10G</strong> → susp. 1 etapă · → <strong>11G, 12G...</strong> → câte 1 etapă per galben<br>
+          <small>Numărătoarea se resetează la începutul fiecărei faze (Regular → PO/POut), cu excepția suspendărilor active.</small>
+        </div>
+        <div class="art-source">Sursă: Regulament Disciplinar FRF — Art. 41</div>
+      </div>
+      <div class="rtb-article">
+        <div class="art-title">Reset între faze — Regulă specifică Liga Elitelor U18/U17</div>
+        <div class="rtb-hl teal">La trecerea din Sezonul Regular în Play-Off/Play-Out, cumulul de cartonașe galbene se resetează. <strong>Excepție:</strong> suspendările active (cumul/GG/roșu din ultima etapă din Regular) rămân în vigoare și se execută în prima etapă din PO/POut.</div>
+        <div class="art-source">Sursă: Regulamentul Competiției Liga Elitelor FRF, Sezon 2025-2026</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- REG INFO -->
+  <div class="reg-info">
+    <strong>Praguri suspendare</strong> — numărătoare continuă <em>per fază</em> (Regular / Play-Off / Play-Out):
+    <div class="reg-pills">
+      <span class="reg-pill">🔵 4G → susp. 1 etapă</span>
+      <span class="reg-pill">🔵 7G → susp. 1 etapă</span>
+      <span class="reg-pill">🔵 9G → susp. 1 etapă</span>
+      <span class="reg-pill">🔵 10G → susp. 1 etapă</span>
+      <span class="reg-pill">🔵 11G+ → câte 1/galben</span>
+      <span class="reg-pill red">🔴 Roșu / GG → Comisia FRF</span>
+      <span class="reg-pill teal">🔄 Reset la PO/POut (susp. active rămân)</span>
+    </div>
+  </div>
+
+  <!-- LEGEND -->
+  <div class="legend">
+    <div class="leg-item"><div class="leg-dot" style="background:#1565c0"></div>Prag galben (4/7/9/10+)</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#f39c12"></div>Atenție (3G)</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#c0392b"></div>Suspendat auto</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#e67e22"></div>Verifică Disciplina</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#22a64a"></div>Disponibil</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#b0c4e8"></div>Separator RESET</div>
+  </div>
+
+  <!-- SUMMARY -->
+  <div class="summary" id="summary"></div>
+
+  <!-- TABLE -->
+  <div class="tbl-outer">
+    <div class="scroll-hint">← Derulați orizontal pentru toate etapele →</div>
+    <div class="tbl-scroll">
+      <table id="main-table">
+        <thead id="thead"></thead>
+        <tbody id="tbody"></tbody>
+        <tfoot id="tfoot"></tfoot>
+      </table>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <strong>IDC Sports Management</strong> · primulantrenament.com · idcdellesportbusiness@gmail.com<br>
+  Instrument informativ. Responsabilitatea corectitudinii datelor revine integral utilizatorului.<br>
+  Verificați întotdeauna situația oficială pe platforma și comunicatele FRF.
+</footer>
+
+<script>
+const REG_ETAPE  = 11;
+const PO_ETAPE   = 14;
+const POUT_ETAPE = 14;
+const PLAYERS    = 25;
+const STORAGE_KEY = 'idc_demo_liga_elite_u18_u17';
+
+// Indexuri în array-ul matches[]:
+// 0-10  = Regular E1-E11
+// 11-24 = Play-Off E1-E14
+// 25-38 = Play-Out E1-E14
+const N_MATCHES = REG_ETAPE + PO_ETAPE + POUT_ETAPE; // 39
+
+const REG_START  = 0;
+const PO_START   = REG_ETAPE;
+const POUT_START = REG_ETAPE + PO_ETAPE;
+
+let state = {
+  club: '', cat: '',
+  players: initPlayers()
+};
+
+function initPlayers() {
+  return Array.from({length: PLAYERS}, (_, i) => ({
+    name: `Jucător ${i+1}`,
+    matches: Array(N_MATCHES).fill(''),
+    disc: 0
+  }));
+}
+
+// ── DISCLAIMER ───────────────────────────────────────────
+function toggleAccept() {
+  const ok = document.getElementById('disc-cb').checked;
+  const btn = document.getElementById('accept-btn');
+  btn.disabled = !ok; btn.classList.toggle('active', ok);
+}
+function acceptDisc() {
+  if (!document.getElementById('disc-cb').checked) return;
+  document.getElementById('disclaimer-overlay').style.display = 'none';
+}
+function toggleReg(hdr) {
+  hdr.classList.toggle('open');
+  hdr.nextElementSibling.classList.toggle('open');
+}
+
+// ── LOGICĂ ───────────────────────────────────────────────
+function countG(matches, start, len) {
+  let g = 0;
+  for (let i = start; i < start + len; i++) {
+    const u = (matches[i]||'').trim().toUpperCase();
+    if (u === 'G') g++;
+    // GG = 0 galbene (se anulează)
+  }
+  return g;
+}
+
+function hasRed(matches, start, len) {
+  for (let i = start; i < start + len; i++) {
+    const u = (matches[i]||'').trim().toUpperCase();
+    if (u === 'R' || u === 'GG') return true;
+  }
+  return false;
+}
+
+// Praguri: 4, 7, 9, 10, 11, 12...
+function calcSusp(total) {
+  if (total < 4)  return 0;
+  if (total < 7)  return 1;
+  if (total < 9)  return 2;
+  if (total < 10) return 3;
+  return 3 + (total - 9);
+}
+
+// Returnează indexele (globale) ale etapelor prag per bloc
+function getMilestones(matches, start, len) {
+  const ms = new Set();
+  const total = countG(matches, start, len);
+  const thresholds = [4, 7, 9];
+  for (let t = 10; t <= total; t++) thresholds.push(t);
+  thresholds.forEach(t => {
+    if (total >= t) {
+      let run = 0;
+      for (let i = start; i < start + len; i++) {
+        const u = (matches[i]||'').trim().toUpperCase();
+        if (u === 'G') run++;
+        if (run >= t) { ms.add(i); break; }
+      }
+    }
+  });
+  return ms;
+}
+
+function getStatus(p) {
+  const disc = parseInt(p.disc)||0;
+  // Verifică eliminări în orice fază
+  if (hasRed(p.matches, REG_START,  REG_ETAPE)  ||
+      hasRed(p.matches, PO_START,   PO_ETAPE)   ||
+      hasRed(p.matches, POUT_START, POUT_ETAPE)) return 'disc';
+  if (disc > 0) return 'susp';
+
+  // Status bazat pe faza cu date (cea mai recentă completată)
+  const gPout = countG(p.matches, POUT_START, POUT_ETAPE);
+  const gPo   = countG(p.matches, PO_START,   PO_ETAPE);
+  const gReg  = countG(p.matches, REG_START,  REG_ETAPE);
+
+  // Folosim faza activă (ultima cu date)
+  let activeG = 0;
+  if (gPout > 0) activeG = gPout;
+  else if (gPo > 0) activeG = gPo;
+  else activeG = gReg;
+
+  const susp = calcSusp(activeG);
+  if (susp > 0) return 'susp';
+  if (activeG === 3) return 'warn3';
+  if (activeG > 0) return 'warn';
+  return 'ok';
+}
+
+function badge(s) {
+  const m = {
+    ok:    ['✅ Disponibil',            'b-ok'],
+    warn:  ['🟡 Atenție galbene',       'b-warn'],
+    warn3: ['🟠 Atenție — 1G → Susp!', 'b-warn3'],
+    susp:  ['🔴 Suspendat',             'b-susp'],
+    disc:  ['⚠️ Verifică Disciplina',   'b-disc'],
+  };
+  const d = m[s]||m['ok'];
+  return `<span class="badge ${d[1]}">${d[0]}</span>`;
+}
+
+// ── BUILD HEAD ────────────────────────────────────────────
+function buildHead() {
+  const thead = document.getElementById('thead');
+  thead.innerHTML = '';
+
+  // ROW 1 — grupuri
+  const trG = document.createElement('tr'); trG.className='tr-group';
+
+  const thNr = document.createElement('th'); thNr.className='sticky'; thNr.rowSpan=2; thNr.textContent='Nr.'; trG.appendChild(thNr);
+  const thN  = document.createElement('th'); thN.className='sticky2'; thN.rowSpan=2; thN.textContent='Nume Jucător'; trG.appendChild(thN);
+
+  // Regular
+  const thReg = document.createElement('th'); thReg.className='g-reg'; thReg.colSpan=REG_ETAPE;
+  thReg.textContent='🟢 SEZON REGULAR — 11 etape · Galbene cumulative'; trG.appendChild(thReg);
+  // Sep RESET
+  const sep1 = document.createElement('th'); sep1.className='sep-lbl'; sep1.rowSpan=2; sep1.textContent='RESET'; trG.appendChild(sep1);
+  // PO
+  const thPo = document.createElement('th'); thPo.className='g-po'; thPo.colSpan=PO_ETAPE;
+  thPo.textContent='🔵 PLAY-OFF — 14 etape · Reset galbene'; trG.appendChild(thPo);
+  // Sep RESET
+  const sep2 = document.createElement('th'); sep2.className='sep-lbl'; sep2.rowSpan=2; sep2.textContent='RESET'; trG.appendChild(sep2);
+  // POut
+  const thPout = document.createElement('th'); thPout.className='g-pout'; thPout.colSpan=POUT_ETAPE;
+  thPout.textContent='🟠 PLAY-OUT — 14 etape · Reset galbene'; trG.appendChild(thPout);
+  // Sep
+  const sep3 = document.createElement('th'); sep3.className='sep'; sep3.rowSpan=2; trG.appendChild(sep3);
+  // Stat
+  const thStat = document.createElement('th'); thStat.className='g-stat'; thStat.colSpan=6;
+  thStat.textContent='STATISTICI & STATUS'; trG.appendChild(thStat);
+
+  thead.appendChild(trG);
+
+  // ROW 2 — coloane individuale
+  const trC = document.createElement('tr'); trC.className='tr-cols';
+
+  for (let e=1; e<=REG_ETAPE; e++) {
+    const th=document.createElement('th'); th.className='c-reg'; th.textContent=`E${e}`; th.style.minWidth='32px'; trC.appendChild(th);
+  }
+  for (let e=1; e<=PO_ETAPE; e++) {
+    const th=document.createElement('th'); th.className='c-po'; th.textContent=`PO${e}`; th.style.minWidth='34px'; trC.appendChild(th);
+  }
+  for (let e=1; e<=POUT_ETAPE; e++) {
+    const th=document.createElement('th'); th.className='c-pout'; th.textContent=`POut${e}`; th.style.minWidth='38px'; trC.appendChild(th);
+  }
+
+  ['G Reg','G PO','G POut','Susp.','Disc.','STATUS'].forEach(h => {
+    const th=document.createElement('th'); th.textContent=h;
+    if (h==='STATUS') th.style.minWidth='150px';
+    trC.appendChild(th);
+  });
+
+  thead.appendChild(trC);
+}
+
+// ── RENDER ────────────────────────────────────────────────
+function render() {
+  const tbody = document.getElementById('tbody');
+  tbody.innerHTML = '';
+  let nOk=0, nWarn=0, nSusp=0, nDisc=0;
+  let totGReg=0, totGPo=0, totGPout=0;
+
+  // Milestone sets per player calculăm în loop
+  state.players.forEach((p, pi) => {
+    const gReg  = countG(p.matches, REG_START,  REG_ETAPE);
+    const gPo   = countG(p.matches, PO_START,   PO_ETAPE);
+    const gPout = countG(p.matches, POUT_START, POUT_ETAPE);
+    const status = getStatus(p);
+    const msReg  = getMilestones(p.matches, REG_START,  REG_ETAPE);
+    const msPo   = getMilestones(p.matches, PO_START,   PO_ETAPE);
+    const msPout = getMilestones(p.matches, POUT_START, POUT_ETAPE);
+
+    totGReg  += gReg;
+    totGPo   += gPo;
+    totGPout += gPout;
+
+    if (status==='ok') nOk++;
+    else if (status==='warn'||status==='warn3') { nOk++; nWarn++; }
+    else if (status==='susp') nSusp++;
+    else if (status==='disc') nDisc++;
+
+    const tr = document.createElement('tr');
+
+    // Nr
+    const tdNr=document.createElement('td'); tdNr.className='sticky'; tdNr.textContent=pi+1; tr.appendChild(tdNr);
+    // Nume
+    const tdN=document.createElement('td'); tdN.className='sticky2';
+    const ni=document.createElement('input'); ni.type='text'; ni.value=p.name; ni.placeholder=`Jucător ${pi+1}`;
+    ni.addEventListener('input', e=>{p.name=e.target.value; save();});
+    tdN.appendChild(ni); tr.appendChild(tdN);
+
+    // Helper: adaugă celulă meci
+    function addMatch(idx, cls, msSet) {
+      const td=document.createElement('td'); td.className=`mc ${cls}`;
+      const inp=document.createElement('input');
+      inp.type='text'; inp.maxLength=2; inp.value=p.matches[idx];
+      const u=(p.matches[idx]||'').trim().toUpperCase();
+      if (msSet.has(idx))  inp.classList.add('ms');
+      else if (u==='R')    inp.classList.add('ir');
+      else if (u==='GG')   inp.classList.add('elimgg');
+      else if (u==='G')    inp.classList.add('ig');
+      inp.addEventListener('input', e=>{p.matches[idx]=e.target.value; save(); render();});
+      td.appendChild(inp); tr.appendChild(td);
+    }
+
+    // Regular
+    for (let i=REG_START; i<REG_START+REG_ETAPE; i++) addMatch(i,'c-reg-bg', msReg);
+    // Sep
+    const s1=document.createElement('td'); s1.className='sep-lbl'; tr.appendChild(s1);
+    // PO
+    for (let i=PO_START; i<PO_START+PO_ETAPE; i++) addMatch(i,'c-po-bg', msPo);
+    // Sep
+    const s2=document.createElement('td'); s2.className='sep-lbl'; tr.appendChild(s2);
+    // POut
+    for (let i=POUT_START; i<POUT_START+POUT_ETAPE; i++) addMatch(i,'c-pout-bg', msPout);
+    // Sep stat
+    const ss=document.createElement('td'); ss.className='sep'; tr.appendChild(ss);
+
+    // G Reg
+    const tdGR=document.createElement('td'); tdGR.className='c-tot';
+    tdGR.textContent=gReg||'—'; tdGR.style.color=gReg>=4?'var(--red)':gReg===3?'var(--orange)':gReg>0?'var(--yellow)':'var(--text-mid)'; tr.appendChild(tdGR);
+    // G PO
+    const tdGP=document.createElement('td'); tdGP.className='c-tot';
+    tdGP.textContent=gPo||'—'; tdGP.style.color=gPo>=4?'var(--red)':gPo===3?'var(--orange)':gPo>0?'var(--yellow)':'var(--text-mid)'; tr.appendChild(tdGP);
+    // G POut
+    const tdGPo=document.createElement('td'); tdGPo.className='c-tot';
+    tdGPo.textContent=gPout||'—'; tdGPo.style.color=gPout>=4?'var(--red)':gPout===3?'var(--orange)':gPout>0?'var(--yellow)':'var(--text-mid)'; tr.appendChild(tdGPo);
+
+    // Susp (bazat pe faza activă)
+    const activeG = gPout>0?gPout:gPo>0?gPo:gReg;
+    const susp = calcSusp(activeG);
+    const tdS=document.createElement('td'); tdS.className='c-susp'; tdS.textContent=susp||'—'; tr.appendChild(tdS);
+
+    // Disc
+    const tdD=document.createElement('td'); tdD.className='c-disc';
+    const di=document.createElement('input'); di.type='number'; di.min=0; di.max=20; di.value=p.disc||0;
+    di.addEventListener('input', e=>{p.disc=parseInt(e.target.value)||0; save(); render();});
+    tdD.appendChild(di); tr.appendChild(tdD);
+
+    // Status
+    const tdSt=document.createElement('td'); tdSt.className='c-status'; tdSt.innerHTML=badge(status); tr.appendChild(tdSt);
+
+    tbody.appendChild(tr);
+  });
+
+  // TFOOT
+  const tfoot=document.getElementById('tfoot');
+  tfoot.innerHTML='';
+  const fr=document.createElement('tr');
+  const fNr=document.createElement('td'); fNr.className='sticky'; fr.appendChild(fNr);
+  const fN=document.createElement('td'); fN.className='sticky2'; fN.textContent='TOTALE ECHIPĂ'; fr.appendChild(fN);
+  // coloane goale + separatoare
+  for (let i=0;i<REG_ETAPE;i++) fr.appendChild(document.createElement('td'));
+  const fs1=document.createElement('td'); fs1.className='sep-lbl'; fr.appendChild(fs1);
+  for (let i=0;i<PO_ETAPE;i++) fr.appendChild(document.createElement('td'));
+  const fs2=document.createElement('td'); fs2.className='sep-lbl'; fr.appendChild(fs2);
+  for (let i=0;i<POUT_ETAPE;i++) fr.appendChild(document.createElement('td'));
+  const fss=document.createElement('td'); fss.className='sep'; fr.appendChild(fss);
+  const fGR=document.createElement('td'); fGR.textContent=totGReg; fGR.className='c-tot'; fr.appendChild(fGR);
+  const fGP=document.createElement('td'); fGP.textContent=totGPo;  fGP.className='c-tot'; fr.appendChild(fGP);
+  const fGPo=document.createElement('td'); fGPo.textContent=totGPout; fGPo.className='c-tot'; fr.appendChild(fGPo);
+  const fS=document.createElement('td'); fS.className='c-susp'; fS.textContent=nSusp+nDisc; fr.appendChild(fS);
+  fr.appendChild(document.createElement('td'));
+  const fSt=document.createElement('td'); fSt.style.fontSize='11px'; fSt.textContent=`${nSusp+nDisc} susp. · ${nWarn} atenție`; fr.appendChild(fSt);
+  tfoot.appendChild(fr);
+
+  // SUMMARY
+  document.getElementById('summary').innerHTML=`
+    <div class="sum-card c-ok"><div class="num">${nOk}</div><div class="lbl">Disponibili</div></div>
+    <div class="sum-card c-warn"><div class="num">${nWarn}</div><div class="lbl">Atenție</div></div>
+    <div class="sum-card c-susp"><div class="num">${nSusp}</div><div class="lbl">Suspendați</div></div>
+    <div class="sum-card c-disc"><div class="num">${nDisc}</div><div class="lbl">Verifică Disc.</div></div>
+  `;
+}
+
+// ── SAVE / LOAD ────────────────────────────────────────────
+function save() {
+  state.club = document.getElementById('inp-club').value;
+  state.cat  = document.getElementById('inp-cat').value;
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e) {}
+}
+
+function load() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const s = JSON.parse(raw);
+      state.club = s.club||'';
+      state.cat  = s.cat||'';
+      if (s.players) {
+        s.players.forEach((sp,i) => {
+          if (i<state.players.length) {
+            state.players[i].name = sp.name||`Jucător ${i+1}`;
+            state.players[i].disc = sp.disc||0;
+            if (sp.matches) sp.matches.forEach((m,mi)=>{ if(mi<N_MATCHES) state.players[i].matches[mi]=m; });
+          }
+        });
+      }
+      document.getElementById('inp-club').value = state.club;
+      document.getElementById('inp-cat').value  = state.cat;
+    }
+  } catch(e) {}
+}
+
+buildHead();
+load();
+render();
+</script>
+</body>
+</html>

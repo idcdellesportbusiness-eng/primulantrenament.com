@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DEMO — Cupa României — Liga 3 — IDC Sports Management</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1A2F5A; --navy-light: #243f75;
+    --green: #1a6b35; --green-bright: #22a64a;
+    --red: #c0392b; --red-light: #ffebeb;
+    --orange: #e67e22; --orange-light: #fff3e0;
+    --yellow: #f39c12; --yellow-light: #fffde7;
+    --blue-ms: #1565c0; --blue-ms-light: #e3f2fd;
+    --purple: #6a1b9a; --purple-light: #f3e5f5;
+    --grey-bg: #f4f6fb; --grey-border: #dde3ef;
+    --grey-light: #f9fafc; --text-dark: #1a2340; --text-mid: #4a5568;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Barlow', sans-serif; background: var(--grey-bg); color: var(--text-dark); min-height: 100vh; -webkit-text-size-adjust: 100%; }
+
+  #disclaimer-overlay { position: fixed; inset: 0; z-index: 1000; background: rgba(10,18,40,0.93); display: flex; align-items: center; justify-content: center; padding: 16px; }
+  .disc-box { background: white; border-radius: 14px; max-width: 500px; width: 100%; overflow: hidden; box-shadow: 0 24px 60px rgba(0,0,0,0.5); }
+  .disc-head { background: var(--navy); padding: 18px 22px; display: flex; align-items: center; gap: 12px; }
+  .disc-head h2 { font-family: 'Barlow Condensed', sans-serif; font-size: 17px; font-weight: 800; color: white; letter-spacing: 0.5px; line-height: 1.2; }
+  .disc-head p { font-size: 11px; color: #90aad4; margin-top: 2px; }
+  .disc-body { padding: 18px 22px; }
+  .disc-body p { font-size: 13px; line-height: 1.7; color: var(--text-mid); margin-bottom: 10px; }
+  .warn-box { background: #fff8e1; border-left: 4px solid var(--yellow); border-radius: 6px; padding: 12px 14px; margin: 12px 0; font-size: 13px; line-height: 1.6; color: #5d4037; }
+  .warn-box strong { color: #3e2400; }
+  .disc-check { display: flex; align-items: flex-start; gap: 10px; margin: 14px 0 18px; cursor: pointer; }
+  .disc-check input { width: 18px; height: 18px; margin-top: 2px; accent-color: var(--navy); cursor: pointer; flex-shrink: 0; }
+  .disc-check span { font-size: 13px; color: var(--text-dark); line-height: 1.5; }
+  #accept-btn { width: 100%; background: #ccc; color: white; border: none; padding: 13px; border-radius: 8px; font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 800; letter-spacing: 1px; cursor: not-allowed; transition: all 0.2s; }
+  #accept-btn.active { background: var(--green); cursor: pointer; }
+
+  header { background: var(--navy); padding: 0 12px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 12px rgba(0,0,0,0.3); }
+  .hdr-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 10px 0; gap: 10px; flex-wrap: wrap; }
+  .logo-area { display: flex; align-items: center; gap: 8px; }
+  .logo-ico { width: 36px; height: 36px; background: var(--red); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+  .logo-txt h1 { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 800; color: white; letter-spacing: 0.5px; line-height: 1.1; }
+  .logo-txt p { font-size: 10px; color: #90aad4; }
+  .comp-badge { background: var(--red); color: white; padding: 5px 12px; border-radius: 20px; font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.5px; }
+
+  main { max-width: 1200px; margin: 0 auto; padding: 12px; }
+
+  .club-bar { background: white; border-radius: 10px; padding: 10px 14px; margin-bottom: 10px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; box-shadow: 0 1px 4px rgba(0,0,0,0.06); border: 1px solid var(--grey-border); }
+  .club-bar label { font-size: 10px; font-weight: 700; color: var(--text-mid); letter-spacing: 0.5px; text-transform: uppercase; }
+  .club-bar input { border: 1px solid var(--grey-border); border-radius: 6px; padding: 5px 10px; font-family: 'Barlow', sans-serif; font-size: 13px; color: var(--text-dark); background: var(--grey-bg); }
+  .club-bar input:focus { outline: 2px solid var(--navy); border-color: transparent; }
+  .season-lbl { margin-left: auto; font-family: 'Barlow Condensed', sans-serif; font-size: 12px; color: var(--text-mid); font-weight: 600; }
+
+  .links-panel { background: white; border-radius: 10px; padding: 10px 14px; margin-bottom: 10px; border: 1px solid var(--grey-border); display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .links-panel .lp-label { font-size: 11px; font-weight: 700; color: var(--text-mid); letter-spacing: 0.5px; text-transform: uppercase; flex-shrink: 0; }
+  .lp-link { display: inline-flex; align-items: center; gap: 5px; background: var(--navy); color: white; padding: 5px 12px; border-radius: 20px; font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; text-decoration: none; transition: background 0.15s; }
+  .lp-link:hover { background: var(--navy-light); }
+  .lp-link.red { background: var(--red); }
+
+  .reg-text-box { background: white; border-radius: 10px; border: 1px solid var(--grey-border); margin-bottom: 10px; overflow: hidden; }
+  .rtb-header { background: var(--navy); padding: 9px 14px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; user-select: none; }
+  .rtb-header h3 { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 700; color: white; letter-spacing: 0.5px; }
+  .rtb-header .arrow { color: white; font-size: 12px; transition: transform 0.2s; }
+  .rtb-header.open .arrow { transform: rotate(180deg); }
+  .rtb-body { padding: 12px 14px; display: none; font-size: 12px; line-height: 1.8; color: var(--text-mid); }
+  .rtb-body.open { display: block; }
+  .rtb-article { margin-bottom: 14px; padding-bottom: 14px; border-bottom: 1px solid var(--grey-border); }
+  .rtb-article:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .art-title { font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 800; color: var(--navy); letter-spacing: 0.3px; margin-bottom: 6px; text-transform: uppercase; }
+  .art-source { font-size: 10px; color: #aab; font-style: italic; margin-top: 6px; }
+  .rtb-hl { border-left: 3px solid var(--blue-ms); background: var(--blue-ms-light); border-radius: 4px; padding: 6px 10px; margin: 5px 0; font-weight: 600; color: var(--text-dark); font-size: 12px; }
+  .rtb-hl.orange { border-color: var(--orange); background: var(--orange-light); color: #5d3200; }
+  .rtb-hl.purple { border-color: var(--purple); background: var(--purple-light); color: var(--purple); }
+  .rtb-hl.red { border-color: var(--red); background: var(--red-light); color: var(--red); }
+
+  .reg-info { background: white; border-radius: 10px; padding: 10px 14px; margin-bottom: 10px; border: 1px solid var(--grey-border); font-size: 12px; color: var(--text-mid); line-height: 1.6; }
+  .reg-info strong { color: var(--navy); }
+  .reg-pills { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
+  .reg-pill { background: var(--blue-ms-light); color: var(--blue-ms); border-radius: 20px; padding: 2px 10px; font-size: 11px; font-weight: 700; font-family: 'Barlow Condensed', sans-serif; }
+  .reg-pill.red { background: var(--red-light); color: var(--red); }
+  .reg-pill.purple { background: var(--purple-light); color: var(--purple); }
+  .reg-pill.orange { background: var(--orange-light); color: var(--orange); }
+
+  .legend { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+  .leg-item { display: flex; align-items: center; gap: 5px; background: white; border-radius: 6px; padding: 4px 9px; font-size: 11px; font-weight: 600; border: 1px solid var(--grey-border); color: var(--text-mid); }
+  .leg-dot { width: 9px; height: 9px; border-radius: 50%; }
+
+  .summary { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin-bottom: 10px; }
+  @media(max-width:480px){ .summary { grid-template-columns: repeat(2,1fr); } }
+  .sum-card { background: white; border-radius: 10px; padding: 12px; text-align: center; border: 1px solid var(--grey-border); }
+  .sum-card .num { font-family: 'Barlow Condensed', sans-serif; font-size: 30px; font-weight: 800; line-height: 1; }
+  .sum-card .lbl { font-size: 10px; font-weight: 600; color: var(--text-mid); letter-spacing: 0.5px; text-transform: uppercase; margin-top: 3px; }
+  .c-ok .num { color: var(--green-bright); } .c-warn .num { color: var(--yellow); } .c-susp .num { color: var(--red); } .c-disc .num { color: var(--orange); }
+
+  .tbl-outer { background: white; border-radius: 12px; border: 1px solid var(--grey-border); box-shadow: 0 2px 8px rgba(0,0,0,0.06); overflow: hidden; margin-bottom: 16px; }
+  .tbl-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .scroll-hint { text-align: center; padding: 5px; font-size: 11px; color: var(--text-mid); background: var(--grey-bg); border-bottom: 1px solid var(--grey-border); display: none; }
+  @media(max-width:900px){ .scroll-hint { display: block; } }
+  table { border-collapse: collapse; width: 100%; }
+
+  th.sticky, td.sticky { position: sticky; left: 0; z-index: 3; background: inherit; }
+  th.sticky2, td.sticky2 { position: sticky; left: 32px; z-index: 3; background: inherit; box-shadow: 2px 0 5px rgba(0,0,0,0.09); }
+
+  thead tr.tr-group th { padding: 5px 4px; font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.8); letter-spacing: 0.4px; text-align: center; border-right: 1px solid rgba(255,255,255,0.08); background: #0d2147; text-transform: uppercase; }
+  thead tr.tr-group th.sticky  { background: #0d2147; }
+  thead tr.tr-group th.sticky2 { background: #0d2147; }
+  thead tr.tr-group th.g-reg   { background: #0a3020; }
+  thead tr.tr-group th.g-tur   { background: #003050; }
+  thead tr.tr-group th.g-grupe { background: #3a0a6e; }
+  thead tr.tr-group th.g-sf    { background: #5c1a00; }
+  thead tr.tr-group th.g-fin   { background: #6b0a0a; }
+  thead tr.tr-group th.g-stat  { background: #0d2147; }
+
+  thead tr.tr-cols th { padding: 7px 4px; font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; color: white; letter-spacing: 0.4px; text-align: center; white-space: nowrap; border-right: 1px solid rgba(255,255,255,0.1); background: var(--navy); }
+  thead tr.tr-cols th.sticky  { background: var(--navy); }
+  thead tr.tr-cols th.sticky2 { background: var(--navy); text-align: left; padding-left: 10px; min-width: 130px; }
+  thead tr.tr-cols th.c-reg   { background: #174a30; }
+  thead tr.tr-cols th.c-tur   { background: #0a3d5c; }
+  thead tr.tr-cols th.c-grupe { background: #4a1275; }
+  thead tr.tr-cols th.c-sf    { background: #7a2800; }
+  thead tr.tr-cols th.c-fin   { background: #8b1a1a; }
+
+  th.sep-lbl, td.sep-lbl { width: 28px !important; min-width: 28px !important; padding: 0 !important; background: #b0c4e8 !important; border: none !important; }
+  thead tr.tr-group th.sep-lbl { background: #7a96c8 !important; font-size: 8px !important; color: white !important; font-weight: 800 !important; writing-mode: vertical-rl; }
+  thead tr.tr-cols th.sep-lbl  { background: #7a96c8 !important; }
+  tfoot td.sep-lbl { background: #7a96c8 !important; }
+  tbody td.sep-lbl { background: #dde8f5 !important; border: none !important; }
+
+  th.sep, td.sep { width: 8px !important; min-width: 8px !important; padding: 0 !important; border: none !important; background: #b0c4e8 !important; }
+  thead tr.tr-group th.sep { background: #7a96c8 !important; }
+  thead tr.tr-cols th.sep  { background: #7a96c8 !important; }
+  tfoot td.sep { background: #7a96c8 !important; }
+
+  tbody tr { border-bottom: 1px solid var(--grey-border); }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:nth-child(even) td { background: var(--grey-light); }
+  tbody tr:hover td { background: #eef2fb !important; }
+  td { padding: 5px 3px; font-size: 12px; text-align: center; vertical-align: middle; border-right: 1px solid var(--grey-border); }
+  td.sticky { width: 32px; color: #aab; font-size: 11px; }
+  td.sticky2 { min-width: 130px; text-align: left; }
+  td.sticky2 input { border: none; background: transparent; font-family: 'Barlow', sans-serif; font-size: 12px; font-weight: 500; color: var(--text-dark); width: 120px; padding: 2px 0 2px 8px; }
+  td.sticky2 input:focus { outline: none; border-bottom: 2px solid var(--navy); }
+
+  td.mc { width: 36px; padding: 3px 2px; }
+  td.mc input { width: 32px; height: 26px; border: 1px solid #dde3ef; border-radius: 4px; text-align: center; font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; color: var(--text-dark); background: white; text-transform: uppercase; transition: background 0.1s; -webkit-appearance: none; }
+  td.mc input:focus { outline: 2px solid var(--navy); border-color: transparent; }
+  td.mc input.ms     { background: var(--blue-ms-light) !important; border-color: var(--blue-ms) !important; color: var(--blue-ms) !important; font-weight: 800; }
+  td.mc input.ir     { background: var(--red-light) !important; border-color: var(--red) !important; color: var(--red) !important; }
+  td.mc input.elimgg { background: var(--red-light) !important; border-color: var(--red) !important; color: var(--red) !important; }
+  td.mc input.ig     { background: var(--yellow-light) !important; border-color: var(--yellow) !important; color: #856404 !important; font-weight: 800; }
+  td.mc input.sfg    { background: var(--purple-light) !important; border-color: var(--purple) !important; color: var(--purple) !important; font-weight: 800; }
+
+  td.c-reg-bg   { background: #f0faf4 !important; }
+  td.c-tur-bg   { background: #e8f4ff !important; }
+  td.c-grupe-bg { background: #f9f3ff !important; }
+  td.c-sf-bg    { background: #fff5eb !important; }
+  td.c-fin-bg   { background: #fff5f5 !important; }
+  tbody tr:nth-child(even) td.c-reg-bg   { background: #e2f5ea !important; }
+  tbody tr:nth-child(even) td.c-tur-bg   { background: #d8ecff !important; }
+  tbody tr:nth-child(even) td.c-grupe-bg { background: #f3e8ff !important; }
+  tbody tr:nth-child(even) td.c-sf-bg    { background: #ffecd8 !important; }
+  tbody tr:nth-child(even) td.c-fin-bg   { background: #ffe8e8 !important; }
+
+  td.c-tot { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 800; width: 34px; }
+  td.c-susp { font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; width: 44px; color: var(--red); }
+  td.c-disc { width: 44px; }
+  td.c-disc input { width: 36px; height: 24px; border: 1px solid #dde3ef; border-radius: 4px; text-align: center; font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; color: var(--red); background: white; }
+  td.c-disc input:focus { outline: 2px solid var(--red); }
+  td.c-status { min-width: 155px; padding: 3px 6px; }
+
+  .badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 8px; border-radius: 20px; font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.3px; white-space: nowrap; }
+  .b-ok     { background: #e8f5e9; color: #2e7d32; }
+  .b-warn   { background: var(--yellow-light); color: #856404; }
+  .b-warn3  { background: var(--orange-light); color: #8b4513; }
+  .b-susp   { background: var(--red-light); color: var(--red); }
+  .b-disc   { background: var(--orange-light); color: #8b4513; }
+  .b-sfwarn { background: var(--purple-light); color: var(--purple); }
+
+  tfoot tr { background: var(--navy); }
+  tfoot td { padding: 7px 3px; font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; color: white; text-align: center; border-right: 1px solid rgba(255,255,255,0.1); }
+  tfoot td.sticky, tfoot td.sticky2 { background: var(--navy); }
+  tfoot td.sticky2 { text-align: left; padding-left: 10px; }
+
+  footer { text-align: center; padding: 16px 12px; font-size: 10px; color: #aab; line-height: 1.6; max-width: 1200px; margin: 0 auto; }
+  footer strong { color: var(--navy); }
+</style>
+</head>
+<body>
+
+<!-- DISCLAIMER -->
+<div id="disclaimer-overlay">
+  <div class="disc-box">
+    <div class="disc-head">
+      <div style="font-size:26px">🛡️</div>
+      <div><h2>DEMO — Cupa României Liga 3</h2></div>
+    </div>
+    <div class="disc-body">
+      <p>Bine ați venit în aplicația de gestionare a suspendărilor pentru <strong>Cupa României — Liga 3</strong>.</p>
+      <div class="warn-box">⚠️ <strong>Disclaimer important:</strong> Instrument cu rol exclusiv informativ. Nu înlocuiește regulamentele oficiale FRF sau hotărârile Comisiei de Disciplină.<br><br><strong>Întreaga responsabilitate pentru datele introduse revine utilizatorului.</strong></div>
+      <p>Verificați întotdeauna situația oficială pe platforma și comunicatele FRF.</p>
+      <label class="disc-check">
+        <input type="checkbox" id="disc-cb" onchange="toggleAccept()">
+        <span>Am citit și sunt de acord că <strong>întreaga responsabilitate îmi aparține.</strong></span>
+      </label>
+      <button id="accept-btn" disabled onclick="acceptDisc()">ACCESEAZĂ APLICAȚIA</button>
+    </div>
+  </div>
+</div>
+
+<header>
+  <div class="hdr-inner">
+    <div class="logo-area">
+      <div class="logo-ico">🏆</div>
+      <div class="logo-txt"><h1>IDC SPORTS MANAGEMENT</h1><p>primulantrenament.com</p></div>
+    </div>
+    <div class="comp-badge">🏆 CUPA ROMÂNIEI — LIGA 3</div>
+  </div>
+</header>
+
+<div style="background:#c0392b;color:white;text-align:center;padding:6px 10px;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:0.5px;">
+  🔴 VERSIUNE DEMO — doar pentru prezentare · fără licență necesară
+</div>
+
+<main>
+  <div class="club-bar">
+    <label>CLUB</label>
+    <input type="text" id="inp-club" placeholder="Numele clubului..." oninput="save()">
+    <div class="season-lbl">Sezon 2026–2027 · Reg. · T1·T2·T3·PO · Grupe · SF·Semi · Finală</div>
+  </div>
+
+  <div class="links-panel">
+    <span class="lp-label">🔗 Resurse oficiale FRF:</span>
+    <a class="lp-link" href="https://www.frf.ro/cat/documente-frf/hotarari-comisii/comisia-de-disciplina/" target="_blank">⚖️ Comisia de Disciplină</a>
+    <a class="lp-link red" href="https://www.frf.ro/documente-frf/hotarari-comisii/comisia-de-recurs/" target="_blank">📋 Comisia de Recurs</a>
+  </div>
+
+  <div class="reg-text-box">
+    <div class="rtb-header" onclick="toggleReg(this)">
+      <h3>📖 Prevederi regulamentare Cupa României privind suspendările — apasă pentru detalii</h3>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="rtb-body">
+      <div class="rtb-article">
+        <div class="art-title">Art. a) — Faza Regională</div>
+        <div class="rtb-hl">Cartonașele galbene primite în Faza Regională <strong>nu se transferă</strong> în Turul 1. Evidența rămâne locală fazei.</div>
+        <div class="art-source">Sursă: Regulamentul Cupei României FRF, Sezon 2026-2027</div>
+      </div>
+      <div class="rtb-article">
+        <div class="art-title">Art. b) — Turul 1 + Turul 2 + Turul 3 + Play-off (Bloc 2)</div>
+        <div class="rtb-hl">Galbenele se acumulează continuu în cele 4 meciuri. Jucătorul care cumulează <strong>4 cartonașe galbene</strong> va fi suspendat în primul meci din Grupele principale.</div>
+        <div class="art-source">Sursă: Regulamentul Cupei României FRF — Art. b)</div>
+      </div>
+      <div class="rtb-article">
+        <div class="art-title">Art. c) — Grupe principale (3 meciuri)</div>
+        <div class="rtb-hl purple">Evidență nouă față de fazele anterioare. Regulă specială:<br>
+          → 2G în <strong>G1+G2</strong> → suspendat G3<br>
+          → 2G în <strong>G1+G3</strong> sau <strong>G2+G3</strong> → suspendat Sferturi
+        </div>
+        <div class="art-source">Sursă: Regulamentul Cupei României FRF — Art. c)</div>
+      </div>
+      <div class="rtb-article">
+        <div class="art-title">Art. d) — Sferturi + Semifinale + Finală</div>
+        <div class="rtb-hl purple">Evidență nouă față de Grupe. Regulă specială: 1G în Sferturi + 1G în Semifinale = suspendat Finală.</div>
+        <div class="rtb-hl">GG sau Roșu direct în orice fază → Comisia de Disciplină FRF. Executarea suspendării începe cu primul joc oficial al echipei, conform Art. 41 RD FRF.</div>
+        <div class="art-source">Sursă: Regulamentul Cupei României FRF — Art. d)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="reg-info">
+    <strong>Logica cartonașelor per bloc:</strong>
+    <div class="reg-pills">
+      <span class="reg-pill">🟢 Reg.: local, nu se transferă</span>
+      <span class="reg-pill">🔵 T1+T2+T3+PO: 4G → susp. Grupe</span>
+      <span class="reg-pill purple">🟣 Grupe: 2G → susp. G3 sau Sferturi</span>
+      <span class="reg-pill orange">🟠 SF+Semi: 2G cumulate → susp. Finală</span>
+      <span class="reg-pill red">🔴 GG/Roșu → Comisia FRF</span>
+    </div>
+  </div>
+
+  <div class="legend">
+    <div class="leg-item"><div class="leg-dot" style="background:#1565c0"></div>Prag 4G (T1-PO)</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#6a1b9a"></div>Atenție Grupe/SF</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#f39c12"></div>Atenție galbene</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#c0392b"></div>Suspendat</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#e67e22"></div>Verifică Disciplina</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#22a64a"></div>Disponibil</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#b0c4e8"></div>Separator RESET</div>
+  </div>
+
+  <div class="summary" id="summary"></div>
+
+  <div class="tbl-outer">
+    <div class="scroll-hint">← Derulați orizontal pentru toate coloanele →</div>
+    <div class="tbl-scroll">
+      <table id="main-table">
+        <thead id="thead"></thead>
+        <tbody id="tbody"></tbody>
+        <tfoot id="tfoot"></tfoot>
+      </table>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <strong>IDC Sports Management</strong> · primulantrenament.com · idcdellesportbusiness@gmail.com<br>
+  Instrument informativ. Responsabilitatea corectitudinii datelor revine integral utilizatorului.
+</footer>
+
+<script>
+// Indexuri matches[]:
+// 0       = Faza Regională
+// 1-4     = T1, T2, T3, Play-off (Bloc 2)
+// 5-7     = Grupe G1, G2, G3
+// 8-9     = Sferturi, Semifinale
+// 10      = Finală
+const IDX_REG  = 0;
+const TUR_START= 1; const TUR_LEN = 4;   // T1,T2,T3,PO
+const G1=5; const G2=6; const G3=7;
+const IDX_SF   = 8;  // Sferturi
+const IDX_SEMI = 9;  // Semifinale
+const IDX_FIN  = 10; // Finală
+const N_MATCHES= 11;
+const PLAYERS  = 25;
+const STORAGE_KEY = 'demo_idc_cupa_liga3_v1';
+
+let state = { club: '', players: initPlayers() };
+
+function initPlayers() {
+  return Array.from({length: PLAYERS}, (_, i) => ({
+    name: `Jucător ${i+1}`, matches: Array(N_MATCHES).fill(''), disc: 0
+  }));
+}
+
+function toggleAccept() {
+  const ok=document.getElementById('disc-cb').checked;
+  const btn=document.getElementById('accept-btn');
+  btn.disabled=!ok; btn.classList.toggle('active',ok);
+}
+function acceptDisc() {
+  if (!document.getElementById('disc-cb').checked) return;
+  document.getElementById('disclaimer-overlay').style.display='none';
+}
+function toggleReg(hdr) { hdr.classList.toggle('open'); hdr.nextElementSibling.classList.toggle('open'); }
+
+function valU(v) { return (v||'').trim().toUpperCase(); }
+function isG(v)   { return valU(v)==='G'; }
+function isRed(v) { const u=valU(v); return u==='R'||u==='GG'; }
+
+function countGRange(matches, start, len) {
+  let g=0;
+  for (let i=start; i<start+len; i++) if (isG(matches[i])) g++;
+  return g;
+}
+
+// Milestone pentru Bloc 2 (T1-PO): prag 4G
+function getMsTur(matches) {
+  const ms=new Set();
+  let run=0;
+  for (let i=TUR_START; i<TUR_START+TUR_LEN; i++) {
+    if (isG(matches[i])) run++;
+    if (run===4) { ms.add(i); break; }
+  }
+  return ms;
+}
+
+function getStatus(p) {
+  const disc=parseInt(p.disc)||0;
+
+  // Roșu/GG oriunde → Disciplină
+  for (let i=0; i<N_MATCHES; i++) if (isRed(p.matches[i])) return 'disc';
+  if (disc>0) return 'susp';
+
+  // Sferturi + Semifinale: 2G cumulate → susp Finală
+  const gSF   = isG(p.matches[IDX_SF])   ? 1 : 0;
+  const gSemi = isG(p.matches[IDX_SEMI]) ? 1 : 0;
+  const gSFtot= gSF + gSemi;
+  if (gSFtot >= 2) return 'susp';
+  if (gSFtot === 1) return 'sfwarn';
+
+  // Grupe: 2G → susp G3 sau Sferturi
+  const vG1=p.matches[G1], vG2=p.matches[G2], vG3=p.matches[G3];
+  const gG1=isG(vG1)?1:0, gG2=isG(vG2)?1:0, gG3=isG(vG3)?1:0;
+  // 2G în G1+G2 → susp G3 (dacă G3 nu a fost jucat, atenție)
+  if (gG1+gG2 >= 2) return 'susp';
+  // 2G în G1+G3 sau G2+G3 → susp Sferturi
+  if (gG1+gG3 >= 2 || gG2+gG3 >= 2) return 'susp';
+  // 1G în grupe → atenție
+  if (gG1+gG2+gG3 === 1) return 'sfwarn';
+
+  // Bloc T1-PO: 4G → susp Grupe
+  const gTur = countGRange(p.matches, TUR_START, TUR_LEN);
+  if (gTur >= 4) return 'susp';
+  if (gTur === 3) return 'warn3';
+  if (gTur > 0) return 'warn';
+
+  // Faza Regională: doar local
+  if (isG(p.matches[IDX_REG])) return 'warn';
+
+  return 'ok';
+}
+
+function badge(s) {
+  const m = {
+    ok:     ['✅ Disponibil',            'b-ok'],
+    warn:   ['🟡 Atenție galbene',       'b-warn'],
+    warn3:  ['🟠 Atenție — 1G → Susp!', 'b-warn3'],
+    susp:   ['🔴 Suspendat',             'b-susp'],
+    disc:   ['⚠️ Verifică Disciplina',   'b-disc'],
+    sfwarn: ['🟣 Atenție — Susp. iminentă', 'b-sfwarn'],
+  };
+  const d=m[s]||m['ok'];
+  return `<span class="badge ${d[1]}">${d[0]}</span>`;
+}
+
+function buildHead() {
+  const thead=document.getElementById('thead');
+  thead.innerHTML='';
+  const trG=document.createElement('tr'); trG.className='tr-group';
+
+  const thNr=document.createElement('th'); thNr.className='sticky'; thNr.rowSpan=2; thNr.textContent='Nr.'; trG.appendChild(thNr);
+  const thN=document.createElement('th'); thN.className='sticky2'; thN.rowSpan=2; thN.textContent='Nume Jucător'; trG.appendChild(thN);
+
+  // Faza Regională
+  const thReg=document.createElement('th'); thReg.className='g-reg'; thReg.colSpan=1;
+  thReg.textContent='🟢 FAZA REG.'; trG.appendChild(thReg);
+  // Sep RESET
+  const s1=document.createElement('th'); s1.className='sep-lbl'; s1.rowSpan=2; s1.textContent='RESET'; trG.appendChild(s1);
+  // T1+T2+T3+PO
+  const thTur=document.createElement('th'); thTur.className='g-tur'; thTur.colSpan=4;
+  thTur.textContent='🔵 T1 · T2 · T3 · PLAY-OFF — 4G → Susp. Grupe'; trG.appendChild(thTur);
+  // Sep RESET
+  const s2=document.createElement('th'); s2.className='sep-lbl'; s2.rowSpan=2; s2.textContent='RESET'; trG.appendChild(s2);
+  // Grupe
+  const thGrupe=document.createElement('th'); thGrupe.className='g-grupe'; thGrupe.colSpan=3;
+  thGrupe.textContent='🟣 GRUPE — 2G → Susp.'; trG.appendChild(thGrupe);
+  // Sep RESET
+  const s3=document.createElement('th'); s3.className='sep-lbl'; s3.rowSpan=2; s3.textContent='RESET'; trG.appendChild(s3);
+  // Sferturi + Semifinale
+  const thSF=document.createElement('th'); thSF.className='g-sf'; thSF.colSpan=2;
+  thSF.textContent='🟠 SFERTURI + SEMIFINALE — 2G → Susp. Finală'; trG.appendChild(thSF);
+  // Sep RESET
+  const s4=document.createElement('th'); s4.className='sep-lbl'; s4.rowSpan=2; s4.textContent='RESET'; trG.appendChild(s4);
+  // Finală
+  const thFin=document.createElement('th'); thFin.className='g-fin'; thFin.colSpan=1;
+  thFin.textContent='🏆 FINALĂ'; trG.appendChild(thFin);
+  // Sep
+  const ss=document.createElement('th'); ss.className='sep'; ss.rowSpan=2; trG.appendChild(ss);
+  // Stat
+  const thStat=document.createElement('th'); thStat.className='g-stat'; thStat.colSpan=4;
+  thStat.textContent='STATISTICI & STATUS'; trG.appendChild(thStat);
+  thead.appendChild(trG);
+
+  const trC=document.createElement('tr'); trC.className='tr-cols';
+  // Reg
+  const thR=document.createElement('th'); thR.className='c-reg'; thR.textContent='Reg.'; thR.style.minWidth='40px'; trC.appendChild(thR);
+  // T1-PO
+  ['T1','T2','T3','PO'].forEach(l=>{ const th=document.createElement('th'); th.className='c-tur'; th.textContent=l; th.style.minWidth='34px'; trC.appendChild(th); });
+  // Grupe
+  ['G1','G2','G3'].forEach(l=>{ const th=document.createElement('th'); th.className='c-grupe'; th.textContent=l; th.style.minWidth='34px'; trC.appendChild(th); });
+  // SF+Semi
+  ['Sferturi','Semifin.'].forEach(l=>{ const th=document.createElement('th'); th.className='c-sf'; th.textContent=l; th.style.minWidth='52px'; trC.appendChild(th); });
+  // Finală
+  const thF=document.createElement('th'); thF.className='c-fin'; thF.textContent='Finală'; thF.style.minWidth='44px'; trC.appendChild(thF);
+  // Stat cols
+  ['G Tur','G Grupe','Disc.','STATUS'].forEach(h=>{
+    const th=document.createElement('th'); th.textContent=h;
+    if (h==='STATUS') th.style.minWidth='160px';
+    trC.appendChild(th);
+  });
+  thead.appendChild(trC);
+}
+
+function render() {
+  const tbody=document.getElementById('tbody');
+  tbody.innerHTML='';
+  let nOk=0,nWarn=0,nSusp=0,nDisc=0,totTur=0,totGrupe=0;
+  const msTurAll=[];
+
+  state.players.forEach((p,pi)=>{
+    const gTur   = countGRange(p.matches, TUR_START, TUR_LEN);
+    const gGrupe = (isG(p.matches[G1])?1:0)+(isG(p.matches[G2])?1:0)+(isG(p.matches[G3])?1:0);
+    const msTur  = getMsTur(p.matches);
+    const status = getStatus(p);
+
+    totTur+=gTur; totGrupe+=gGrupe;
+    if (status==='ok') nOk++;
+    else if (['warn','warn3','sfwarn'].includes(status)) { nOk++; nWarn++; }
+    else if (status==='susp') nSusp++;
+    else if (status==='disc') nDisc++;
+
+    const tr=document.createElement('tr');
+    const tdNr=document.createElement('td'); tdNr.className='sticky'; tdNr.textContent=pi+1; tr.appendChild(tdNr);
+    const tdN=document.createElement('td'); tdN.className='sticky2';
+    const ni=document.createElement('input'); ni.type='text'; ni.value=p.name; ni.placeholder=`Jucător ${pi+1}`;
+    ni.addEventListener('input',e=>{p.name=e.target.value;save();});
+    tdN.appendChild(ni); tr.appendChild(tdN);
+
+    function addMc(idx, bgCls, isSFZone, msSet) {
+      const td=document.createElement('td'); td.className=`mc ${bgCls}`;
+      const inp=document.createElement('input');
+      inp.type='text'; inp.maxLength=2; inp.value=p.matches[idx];
+      const u=valU(p.matches[idx]);
+      if (msSet&&msSet.has(idx)) inp.classList.add('ms');
+      else if (u==='R')          inp.classList.add('ir');
+      else if (u==='GG')         inp.classList.add('elimgg');
+      else if (u==='G'&&isSFZone) inp.classList.add('sfg');
+      else if (u==='G')          inp.classList.add('ig');
+      inp.addEventListener('input',e=>{p.matches[idx]=e.target.value;save();render();});
+      td.appendChild(inp); tr.appendChild(td);
+    }
+
+    // Faza Regională
+    addMc(IDX_REG,'c-reg-bg',false,null);
+    // Sep
+    const sep1=document.createElement('td'); sep1.className='sep-lbl'; tr.appendChild(sep1);
+    // T1-PO
+    for (let i=TUR_START;i<TUR_START+TUR_LEN;i++) addMc(i,'c-tur-bg',false,msTur);
+    // Sep
+    const sep2=document.createElement('td'); sep2.className='sep-lbl'; tr.appendChild(sep2);
+    // Grupe
+    [G1,G2,G3].forEach(i=>addMc(i,'c-grupe-bg',true,null));
+    // Sep
+    const sep3=document.createElement('td'); sep3.className='sep-lbl'; tr.appendChild(sep3);
+    // Sferturi + Semifinale
+    [IDX_SF,IDX_SEMI].forEach(i=>addMc(i,'c-sf-bg',true,null));
+    // Sep
+    const sep4=document.createElement('td'); sep4.className='sep-lbl'; tr.appendChild(sep4);
+    // Finală
+    addMc(IDX_FIN,'c-fin-bg',false,null);
+    // Sep stat
+    const ss=document.createElement('td'); ss.className='sep'; tr.appendChild(ss);
+
+    // G Tur
+    const tdGT=document.createElement('td'); tdGT.className='c-tot';
+    tdGT.textContent=gTur||'—'; tdGT.style.color=gTur>=4?'var(--red)':gTur===3?'var(--orange)':gTur>0?'var(--yellow)':'var(--text-mid)'; tr.appendChild(tdGT);
+    // G Grupe
+    const tdGG=document.createElement('td'); tdGG.className='c-tot';
+    tdGG.textContent=gGrupe||'—'; tdGG.style.color=gGrupe>=2?'var(--red)':gGrupe===1?'var(--purple)':'var(--text-mid)'; tr.appendChild(tdGG);
+    // Disc
+    const tdD=document.createElement('td'); tdD.className='c-disc';
+    const di=document.createElement('input'); di.type='number'; di.min=0; di.max=10; di.value=p.disc||0;
+    di.addEventListener('input',e=>{p.disc=parseInt(e.target.value)||0;save();render();});
+    tdD.appendChild(di); tr.appendChild(tdD);
+    // Status
+    const tdSt=document.createElement('td'); tdSt.className='c-status'; tdSt.innerHTML=badge(status); tr.appendChild(tdSt);
+    tbody.appendChild(tr);
+  });
+
+  // TFOOT
+  const tfoot=document.getElementById('tfoot'); tfoot.innerHTML='';
+  const fr=document.createElement('tr');
+  const fNr=document.createElement('td'); fNr.className='sticky'; fr.appendChild(fNr);
+  const fN=document.createElement('td'); fN.className='sticky2'; fN.textContent='TOTALE ECHIPĂ'; fr.appendChild(fN);
+  fr.appendChild(document.createElement('td')); // Reg
+  const fs1=document.createElement('td'); fs1.className='sep-lbl'; fr.appendChild(fs1);
+  for(let i=0;i<4;i++) fr.appendChild(document.createElement('td')); // T1-PO
+  const fs2=document.createElement('td'); fs2.className='sep-lbl'; fr.appendChild(fs2);
+  for(let i=0;i<3;i++) fr.appendChild(document.createElement('td')); // Grupe
+  const fs3=document.createElement('td'); fs3.className='sep-lbl'; fr.appendChild(fs3);
+  for(let i=0;i<2;i++) fr.appendChild(document.createElement('td')); // SF+Semi
+  const fs4=document.createElement('td'); fs4.className='sep-lbl'; fr.appendChild(fs4);
+  fr.appendChild(document.createElement('td')); // Finală
+  const fss=document.createElement('td'); fss.className='sep'; fr.appendChild(fss);
+  const fGT=document.createElement('td'); fGT.className='c-tot'; fGT.textContent=totTur; fr.appendChild(fGT);
+  const fGG=document.createElement('td'); fGG.className='c-tot'; fGG.textContent=totGrupe; fr.appendChild(fGG);
+  fr.appendChild(document.createElement('td'));
+  const fSt=document.createElement('td'); fSt.style.fontSize='11px'; fSt.textContent=`${nSusp+nDisc} susp. · ${nWarn} atenție`; fr.appendChild(fSt);
+  tfoot.appendChild(fr);
+
+  document.getElementById('summary').innerHTML=`
+    <div class="sum-card c-ok"><div class="num">${nOk}</div><div class="lbl">Disponibili</div></div>
+    <div class="sum-card c-warn"><div class="num">${nWarn}</div><div class="lbl">Atenție</div></div>
+    <div class="sum-card c-susp"><div class="num">${nSusp}</div><div class="lbl">Suspendați</div></div>
+    <div class="sum-card c-disc"><div class="num">${nDisc}</div><div class="lbl">Verifică Disc.</div></div>`;
+}
+
+function save() {
+  state.club=document.getElementById('inp-club').value;
+  try { localStorage.setItem(STORAGE_KEY,JSON.stringify(state)); } catch(e) {}
+}
+function load() {
+  try {
+    const raw=localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const s=JSON.parse(raw);
+      state.club=s.club||'';
+      if (s.players) s.players.forEach((sp,i)=>{
+        if (i<state.players.length) {
+          state.players[i].name=sp.name||`Jucător ${i+1}`;
+          state.players[i].disc=sp.disc||0;
+          if (sp.matches) sp.matches.forEach((m,mi)=>{ if(mi<N_MATCHES) state.players[i].matches[mi]=m; });
+        }
+      });
+      document.getElementById('inp-club').value=state.club;
+    }
+  } catch(e) {}
+}
+
+buildHead(); load(); render();
+</script>
+</body>
+</html>
