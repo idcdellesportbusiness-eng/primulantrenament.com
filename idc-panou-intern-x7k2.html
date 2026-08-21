@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IDC Sports Management — Panou Administrare Licențe</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1A2F5A;
+    --green: #1a6b35;
+    --green-bright: #22a64a;
+    --red: #c0392b;
+    --red-light: #ffebeb;
+    --orange: #e67e22;
+    --orange-light: #fff3e0;
+    --yellow: #f39c12;
+    --yellow-light: #fffde7;
+    --grey-bg: #f4f6fb;
+    --grey-border: #dde3ef;
+    --grey-light: #f9fafc;
+    --text-dark: #1a2340;
+    --text-mid: #4a5568;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Barlow', sans-serif; background: var(--grey-bg); color: var(--text-dark); min-height: 100vh; -webkit-text-size-adjust: 100%; }
+
+  /* LOGIN */
+  #login-overlay { position: fixed; inset: 0; z-index: 1000; background: rgba(10,18,40,0.96); display: flex; align-items: center; justify-content: center; padding: 16px; }
+  .login-box { background: white; border-radius: 14px; max-width: 380px; width: 100%; overflow: hidden; box-shadow: 0 24px 60px rgba(0,0,0,0.5); }
+  .login-head { background: var(--navy); padding: 20px 24px; text-align: center; }
+  .login-head h2 { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 800; color: white; letter-spacing: 1px; }
+  .login-head p { font-size: 11px; color: #90aad4; margin-top: 4px; }
+  .login-body { padding: 24px; }
+  .login-body label { font-size: 11px; font-weight: 700; color: var(--text-mid); letter-spacing: 0.5px; text-transform: uppercase; display: block; margin-bottom: 6px; }
+  .login-body input { width: 100%; border: 1px solid var(--grey-border); border-radius: 8px; padding: 10px 14px; font-family: 'Barlow', sans-serif; font-size: 14px; color: var(--text-dark); background: var(--grey-bg); margin-bottom: 16px; }
+  .login-body input:focus { outline: 2px solid var(--navy); border-color: transparent; }
+  #login-err { color: var(--red); font-size: 12px; margin-bottom: 12px; display: none; }
+  .btn-login { width: 100%; background: var(--navy); color: white; border: none; padding: 12px; border-radius: 8px; font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 800; letter-spacing: 1px; cursor: pointer; transition: background 0.2s; }
+  .btn-login:hover { background: #243f75; }
+
+  /* HEADER */
+  header { background: var(--navy); padding: 0 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.3); }
+  .hdr-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 12px 0; gap: 10px; flex-wrap: wrap; }
+  .logo-area { display: flex; align-items: center; gap: 10px; }
+  .logo-ico { width: 38px; height: 38px; background: var(--green); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+  .logo-txt h1 { font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 800; color: white; letter-spacing: 0.5px; }
+  .logo-txt p { font-size: 10px; color: #90aad4; }
+  .hdr-badge { background: var(--orange); color: white; padding: 5px 14px; border-radius: 20px; font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.5px; }
+  .btn-logout { background: rgba(255,255,255,0.15); color: white; border: 1px solid rgba(255,255,255,0.3); padding: 6px 14px; border-radius: 20px; font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; cursor: pointer; transition: background 0.2s; }
+  .btn-logout:hover { background: rgba(255,255,255,0.25); }
+
+  main { max-width: 1100px; margin: 0 auto; padding: 16px; }
+
+  /* STATS */
+  .stats-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 16px; }
+  @media(max-width:600px){ .stats-grid { grid-template-columns: repeat(2,1fr); } }
+  .stat-card { background: white; border-radius: 10px; padding: 14px; text-align: center; border: 1px solid var(--grey-border); }
+  .stat-card .num { font-family: 'Barlow Condensed', sans-serif; font-size: 32px; font-weight: 800; line-height: 1; }
+  .stat-card .lbl { font-size: 10px; font-weight: 700; color: var(--text-mid); letter-spacing: 0.5px; text-transform: uppercase; margin-top: 4px; }
+  .s-total .num { color: var(--navy); }
+  .s-active .num { color: var(--green-bright); }
+  .s-expired .num { color: var(--red); }
+  .s-revenue .num { color: var(--orange); font-size: 22px; }
+
+  /* ADD FORM */
+  .add-box { background: white; border-radius: 10px; padding: 14px 16px; margin-bottom: 16px; border: 1px solid var(--grey-border); }
+  .add-box h3 { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 800; color: var(--navy); letter-spacing: 0.5px; margin-bottom: 12px; text-transform: uppercase; }
+  .add-form { display: flex; flex-wrap: wrap; gap: 8px; align-items: flex-end; }
+  .add-form .field { display: flex; flex-direction: column; gap: 4px; }
+  .add-form label { font-size: 10px; font-weight: 700; color: var(--text-mid); letter-spacing: 0.5px; text-transform: uppercase; }
+  .add-form input, .add-form select { border: 1px solid var(--grey-border); border-radius: 6px; padding: 7px 10px; font-family: 'Barlow', sans-serif; font-size: 13px; color: var(--text-dark); background: var(--grey-bg); min-width: 180px; }
+  .add-form input:focus, .add-form select:focus { outline: 2px solid var(--navy); border-color: transparent; }
+  .btn-gen { background: var(--green); color: white; border: none; padding: 8px 20px; border-radius: 6px; font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 800; letter-spacing: 0.5px; cursor: pointer; transition: background 0.2s; white-space: nowrap; }
+  .btn-gen:hover { background: #145228; }
+
+  /* SEARCH */
+  .search-bar { background: white; border-radius: 10px; padding: 10px 14px; margin-bottom: 10px; border: 1px solid var(--grey-border); display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .search-bar input { border: 1px solid var(--grey-border); border-radius: 6px; padding: 6px 12px; font-family: 'Barlow', sans-serif; font-size: 13px; flex: 1; min-width: 180px; background: var(--grey-bg); }
+  .search-bar input:focus { outline: 2px solid var(--navy); border-color: transparent; }
+  .filter-btn { padding: 6px 14px; border: 2px solid var(--grey-border); border-radius: 6px; background: white; font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; color: var(--text-mid); cursor: pointer; transition: all 0.15s; white-space: nowrap; }
+  .filter-btn.active { background: var(--navy); border-color: var(--navy); color: white; }
+  .btn-export { background: var(--navy); color: white; border: none; padding: 6px 16px; border-radius: 6px; font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; cursor: pointer; margin-left: auto; }
+
+  /* TABLE */
+  .tbl-outer { background: white; border-radius: 12px; border: 1px solid var(--grey-border); overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+  .tbl-scroll { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; }
+  thead tr { background: var(--navy); }
+  thead th { padding: 9px 10px; font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; color: white; letter-spacing: 0.4px; text-align: left; white-space: nowrap; border-right: 1px solid rgba(255,255,255,0.1); }
+  thead th:last-child { border-right: none; }
+  tbody tr { border-bottom: 1px solid var(--grey-border); }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:nth-child(even) td { background: var(--grey-light); }
+  tbody tr:hover td { background: #eef2fb !important; }
+  td { padding: 8px 10px; font-size: 12px; vertical-align: middle; border-right: 1px solid var(--grey-border); }
+  td:last-child { border-right: none; }
+  .td-club { font-weight: 600; color: var(--text-dark); min-width: 160px; }
+  .td-tip { font-size: 11px; color: var(--text-mid); }
+  .td-cod { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 800; color: var(--navy); letter-spacing: 1px; cursor: pointer; }
+  .td-cod:hover { color: var(--green); }
+  .td-data { font-size: 11px; color: var(--text-mid); white-space: nowrap; }
+  .badge-st { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 20px; font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; white-space: nowrap; }
+  .st-activ   { background: #e8f5e9; color: #2e7d32; }
+  .st-expirat { background: var(--red-light); color: var(--red); }
+  .st-revocat { background: var(--orange-light); color: var(--orange); }
+  .btn-act { padding: 3px 10px; border-radius: 4px; font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; border: none; cursor: pointer; transition: all 0.15s; }
+  .btn-revoke { background: var(--orange-light); color: var(--orange); }
+  .btn-revoke:hover { background: var(--orange); color: white; }
+  .btn-restore { background: #e8f5e9; color: var(--green); }
+  .btn-restore:hover { background: var(--green); color: white; }
+  .btn-delete { background: var(--red-light); color: var(--red); }
+  .btn-delete:hover { background: var(--red); color: white; }
+  .btn-copy { background: var(--grey-bg); color: var(--navy); border: 1px solid var(--grey-border); }
+  .btn-copy:hover { background: var(--navy); color: white; }
+
+  /* TOAST */
+  #toast { position: fixed; bottom: 24px; right: 24px; background: var(--navy); color: white; padding: 10px 18px; border-radius: 8px; font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.3px; opacity: 0; transition: opacity 0.3s; z-index: 999; pointer-events: none; }
+  #toast.show { opacity: 1; }
+
+  .empty-state { text-align: center; padding: 40px; color: var(--text-mid); font-size: 13px; }
+
+  footer { text-align: center; padding: 16px; font-size: 10px; color: #aab; }
+  footer strong { color: var(--navy); }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-overlay">
+  <div class="login-box">
+    <div class="login-head">
+      <h2>🔐 IDC SPORTS MANAGEMENT</h2>
+      <p>Panou Administrare Licențe — Acces Restricționat</p>
+    </div>
+    <div class="login-body">
+      <label>Parolă administrator</label>
+      <input type="password" id="pwd-inp" placeholder="Introduceți parola..." onkeydown="if(event.key==='Enter')doLogin()">
+      <div id="login-err">⚠️ Parolă incorectă. Încercați din nou.</div>
+      <button class="btn-login" onclick="doLogin()">ACCESEAZĂ PANOUL</button>
+    </div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="hdr-inner">
+    <div class="logo-area">
+      <div class="logo-ico">⚙️</div>
+      <div class="logo-txt">
+        <h1>IDC SPORTS MANAGEMENT</h1>
+        <p>primulantrenament.com</p>
+      </div>
+    </div>
+    <div class="hdr-badge">🔑 ADMINISTRARE LICENȚE</div>
+    <button class="btn-logout" onclick="doLogout()">Deconectare</button>
+  </div>
+</header>
+
+<main>
+  <!-- STATS -->
+  <div class="stats-grid" id="stats-grid"></div>
+
+  <!-- ADD FORM -->
+  <div class="add-box">
+    <h3>➕ Generează licență nouă</h3>
+    <div class="add-form">
+      <div class="field">
+        <label>Nume Club</label>
+        <input type="text" id="inp-club" placeholder="ex: FC Steaua București">
+      </div>
+      <div class="field">
+        <label>Tip Club</label>
+        <select id="inp-tip">
+          <option value="Tip A — Elite (Top 24)">Tip A — Elite (Top 24)</option>
+          <option value="Tip B — Mixt (25-48)">Tip B — Mixt (25-48)</option>
+          <option value="Tip C — Național (49+)">Tip C — Național (49+)</option>
+          <option value="Tip D — Liga 3">Tip D — Liga 3</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Sezon</label>
+        <select id="inp-sezon">
+          <option value="2026-2027">2026-2027</option>
+          <option value="2027-2028">2027-2028</option>
+        </select>
+      </div>
+      <button class="btn-gen" onclick="genLicenta()">⚡ GENEREAZĂ COD</button>
+    </div>
+  </div>
+
+  <!-- SEARCH + FILTERS -->
+  <div class="search-bar">
+    <input type="text" id="search-inp" placeholder="🔍 Caută club sau cod..." oninput="renderTable()">
+    <button class="filter-btn active" onclick="setFilter('toate')" id="f-toate">Toate</button>
+    <button class="filter-btn" onclick="setFilter('activ')" id="f-activ">Active</button>
+    <button class="filter-btn" onclick="setFilter('expirat')" id="f-expirat">Expirate</button>
+    <button class="filter-btn" onclick="setFilter('revocat')" id="f-revocat">Revocate</button>
+    <button class="btn-export" onclick="exportCSV()">📥 Export CSV</button>
+    <button class="btn-export" style="background:var(--green)" onclick="backupJSON()">💾 Backup JSON</button>
+    <label class="btn-export" style="background:var(--orange);cursor:pointer">
+      📂 Restaurează
+      <input type="file" id="restore-file" accept=".json" style="display:none" onchange="restoreJSON(this)">
+    </label>
+  </div>
+
+  <!-- TABLE -->
+  <div class="tbl-outer">
+    <div class="tbl-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Club</th>
+            <th>Tip</th>
+            <th>Cod Licență</th>
+            <th>Sezon</th>
+            <th>Expiră</th>
+            <th>Generat</th>
+            <th>Status</th>
+            <th>Acțiuni</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</main>
+
+<div id="toast"></div>
+
+<footer>
+  <strong>IDC Sports Management</strong> · Panou intern — acces restricționat · primulantrenament.com
+</footer>
+
+<script>
+// ── PAROLĂ ADMIN ─────────────────────────────────────────
+// Schimbă parola aici:
+const ADMIN_PWD = 'yQ4uXmlL30sRHl';
+const STORAGE_KEY = 'idc_licente_admin_v1';
+
+let currentFilter = 'toate';
+
+function doLogin() {
+  const pwd = document.getElementById('pwd-inp').value;
+  if (pwd === ADMIN_PWD) {
+    document.getElementById('login-overlay').style.display = 'none';
+    renderAll();
+  } else {
+    document.getElementById('login-err').style.display = 'block';
+    document.getElementById('pwd-inp').value = '';
+    document.getElementById('pwd-inp').focus();
+  }
+}
+
+function doLogout() {
+  document.getElementById('login-overlay').style.display = 'flex';
+  document.getElementById('pwd-inp').value = '';
+  document.getElementById('login-err').style.display = 'none';
+}
+
+// ── DATE ─────────────────────────────────────────────────
+function loadData() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch(e) { return []; }
+}
+
+function saveData(data) {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch(e) {}
+}
+
+// ── GENERARE COD ─────────────────────────────────────────
+function genCod(sezon) {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let cod = 'IDC-';
+  for (let i=0; i<4; i++) cod += chars[Math.floor(Math.random()*chars.length)];
+  cod += '-';
+  for (let i=0; i<4; i++) cod += chars[Math.floor(Math.random()*chars.length)];
+  // Adaugă sufixul sezonului
+  const an = sezon.split('-')[1]; // ex: 2026
+  cod += '-' + an;
+  return cod;
+}
+
+function expirareSezon(sezon) {
+  const an = parseInt(sezon.split('-')[1]);
+  return `30.06.${an}`;
+}
+
+function statusCod(licenta) {
+  if (licenta.revocat) return 'revocat';
+  const [zi, luna, an] = licenta.expira.split('.').map(Number);
+  const exp = new Date(an, luna-1, zi, 23, 59, 59);
+  return new Date() > exp ? 'expirat' : 'activ';
+}
+
+function genLicenta() {
+  const club = document.getElementById('inp-club').value.trim();
+  if (!club) { toast('⚠️ Introduceți numele clubului!'); return; }
+
+  const tip   = document.getElementById('inp-tip').value;
+  const sezon = document.getElementById('inp-sezon').value;
+  const data  = loadData();
+
+  // Verifică dacă clubul are deja licență activă pentru același sezon
+  const existent = data.find(l => l.club.toLowerCase()===club.toLowerCase() && l.sezon===sezon && !l.revocat);
+  if (existent) {
+    toast('⚠️ Clubul are deja o licență activă pentru acest sezon!');
+    return;
+  }
+
+  // Generează cod unic
+  let cod;
+  do { cod = genCod(sezon); } while (data.find(l => l.cod===cod));
+
+  const licenta = {
+    id: Date.now(),
+    club,
+    tip,
+    sezon,
+    cod,
+    expira: expirareSezon(sezon),
+    generat: new Date().toLocaleDateString('ro-RO'),
+    revocat: false
+  };
+
+  data.unshift(licenta);
+  saveData(data);
+  document.getElementById('inp-club').value = '';
+  renderAll();
+  toast(`✅ Cod generat: ${cod}`);
+  // Auto-copy
+  copyToClipboard(cod);
+}
+
+// ── ACȚIUNI ───────────────────────────────────────────────
+function revoca(id) {
+  const data = loadData();
+  const l = data.find(x=>x.id===id);
+  if (l) { l.revocat = true; saveData(data); renderAll(); toast('🔴 Licență revocată'); }
+}
+
+function restaureaza(id) {
+  const data = loadData();
+  const l = data.find(x=>x.id===id);
+  if (l) { l.revocat = false; saveData(data); renderAll(); toast('✅ Licență restaurată'); }
+}
+
+function sterge(id) {
+  if (!confirm('Sigur vrei să ștergi această licență?')) return;
+  const data = loadData().filter(x=>x.id!==id);
+  saveData(data); renderAll(); toast('🗑️ Licență ștearsă');
+}
+
+function copiazaCod(cod) {
+  copyToClipboard(cod);
+  toast(`📋 Cod copiat: ${cod}`);
+}
+
+function copyToClipboard(text) {
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).catch(()=>{});
+  } else {
+    const ta = document.createElement('textarea');
+    ta.value = text; document.body.appendChild(ta);
+    ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta);
+  }
+}
+
+// ── FILTER ────────────────────────────────────────────────
+function setFilter(f) {
+  currentFilter = f;
+  ['toate','activ','expirat','revocat'].forEach(id => {
+    document.getElementById(`f-${id}`).classList.toggle('active', id===f);
+  });
+  renderTable();
+}
+
+// ── EXPORT CSV ────────────────────────────────────────────
+function exportCSV() {
+  const data = loadData();
+  const rows = [['Club','Tip','Cod','Sezon','Expira','Generat','Status']];
+  data.forEach(l => rows.push([l.club, l.tip, l.cod, l.sezon, l.expira, l.generat, statusCod(l)]));
+  const csv = rows.map(r=>r.map(c=>`"${c}"`).join(',')).join('\n');
+  const blob = new Blob(['\uFEFF'+csv], {type:'text/csv;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `IDC_Licente_${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+  toast('📥 Export CSV descărcat');
+}
+
+// ── RENDER ────────────────────────────────────────────────
+function renderStats() {
+  const data = loadData();
+  const total   = data.length;
+  const active  = data.filter(l=>statusCod(l)==='activ').length;
+  const expired = data.filter(l=>statusCod(l)==='expirat').length;
+  const revenue = active * 200;
+
+  document.getElementById('stats-grid').innerHTML = `
+    <div class="stat-card s-total"><div class="num">${total}</div><div class="lbl">Total licențe</div></div>
+    <div class="stat-card s-active"><div class="num">${active}</div><div class="lbl">Active</div></div>
+    <div class="stat-card s-expired"><div class="num">${expired}</div><div class="lbl">Expirate</div></div>
+    <div class="stat-card s-revenue"><div class="num">${revenue.toLocaleString('ro-RO')} lei</div><div class="lbl">Venituri estimate</div></div>
+  `;
+}
+
+function renderTable() {
+  const data = loadData();
+  const search = (document.getElementById('search-inp').value||'').toLowerCase();
+  const tbody = document.getElementById('tbody');
+
+  let filtered = data.filter(l => {
+    const st = statusCod(l);
+    if (currentFilter !== 'toate' && st !== currentFilter) return false;
+    if (search && !l.club.toLowerCase().includes(search) && !l.cod.toLowerCase().includes(search)) return false;
+    return true;
+  });
+
+  if (filtered.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="9" class="empty-state">Nicio licență găsită.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = filtered.map((l, i) => {
+    const st = statusCod(l);
+    const stBadge = st==='activ'
+      ? '<span class="badge-st st-activ">✅ Activ</span>'
+      : st==='expirat'
+      ? '<span class="badge-st st-expirat">🔴 Expirat</span>'
+      : '<span class="badge-st st-revocat">⚠️ Revocat</span>';
+
+    const actiuni = st==='revocat'
+      ? `<button class="btn-act btn-restore" onclick="restaureaza(${l.id})">Restaurează</button>
+         <button class="btn-act btn-delete" onclick="sterge(${l.id})">Șterge</button>`
+      : `<button class="btn-act btn-copy" onclick="copiazaCod('${l.cod}')">📋 Copiază</button>
+         <button class="btn-act btn-revoke" onclick="revoca(${l.id})">Revocă</button>
+         <button class="btn-act btn-delete" onclick="sterge(${l.id})">Șterge</button>`;
+
+    return `<tr>
+      <td style="color:#aab;font-size:11px">${i+1}</td>
+      <td class="td-club">${l.club}</td>
+      <td class="td-tip">${l.tip}</td>
+      <td class="td-cod" onclick="copiazaCod('${l.cod}')" title="Click pentru copiere">${l.cod}</td>
+      <td class="td-data">${l.sezon}</td>
+      <td class="td-data">${l.expira}</td>
+      <td class="td-data">${l.generat}</td>
+      <td>${stBadge}</td>
+      <td style="white-space:nowrap;display:flex;gap:4px">${actiuni}</td>
+    </tr>`;
+  }).join('');
+}
+
+function renderAll() {
+  renderStats();
+  renderTable();
+}
+
+// ── BACKUP / RESTORE ─────────────────────────────────────
+function backupJSON() {
+  const data = loadData();
+  if (data.length === 0) { toast('⚠️ Nu există licențe de salvat!'); return; }
+  const backup = {
+    exportat: new Date().toLocaleString('ro-RO'),
+    versiune: 'IDC-v1',
+    licente: data
+  };
+  const blob = new Blob([JSON.stringify(backup, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `IDC_Backup_Licente_${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  toast('💾 Backup salvat cu succes!');
+}
+
+function restoreJSON(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const backup = JSON.parse(e.target.result);
+      if (!backup.licente || !Array.isArray(backup.licente)) {
+        toast('⚠️ Fișier invalid! Nu este un backup IDC.');
+        return;
+      }
+      // Merge cu datele existente (evită duplicate după id)
+      const existente = loadData();
+      const existenteIds = new Set(existente.map(l=>l.id));
+      const noi = backup.licente.filter(l=>!existenteIds.has(l.id));
+      const merged = [...existente, ...noi];
+      saveData(merged);
+      renderAll();
+      toast(`✅ Restaurat! ${noi.length} licențe noi adăugate.`);
+    } catch(err) {
+      toast('⚠️ Eroare la citirea fișierului!');
+    }
+    input.value = '';
+  };
+  reader.readAsText(file);
+}
+
+// ── TOAST ─────────────────────────────────────────────────
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2500);
+}
+
+// Init
+renderAll();
+</script>
+</body>
+</html>
